@@ -1,0 +1,16 @@
+[
+    {
+        "modid": "jerry",
+        "name": "Jerry",
+        "description": "Jerry",
+        "version": "${version}",
+        "mcversion": "${mcversion}",
+        "url": "",
+        "updateUrl": "",
+        "authorList": ["Dave", "eris"],
+        "credits": "",
+        "logoFile": "",
+        "screenshots": [],
+        "dependencies": []
+    }
+]

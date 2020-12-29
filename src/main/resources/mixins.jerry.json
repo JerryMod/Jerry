@@ -1,0 +1,7 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "pet.jerry.mixins",
+  "mixins": ["MixinMinecraft"],
+  "client": [],
+  "server": []
+}
