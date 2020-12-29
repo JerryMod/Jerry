@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 import pet.jerry.Jerry;
+import pet.jerry.core.Toggleable;
 import pet.jerry.feature.Feature;
 
 import java.io.IOException;
@@ -26,6 +27,9 @@ public class HUDEditScreen extends GuiScreen {
 			if(!(feature instanceof HUDElement))
 				continue;
 
+			if(feature instanceof Toggleable && !((Toggleable) feature).isEnabled())
+				continue;
+
 			HUDElement element = (HUDElement) feature;
 			Dimension dimension = element.getDimension();
 			Position pos = element.getPosition().toAbsolute(dimension);
@@ -37,11 +41,12 @@ public class HUDEditScreen extends GuiScreen {
 
 			if(hovered) {
 				anyHovered = true;
-				hoveredElement = element;
+				if(!isDragging)
+					hoveredElement = element;
 			}
 
 			drawRectFloats(pos.getX(), pos.getY(), pos.getX() + dimension.getWidth(), pos.getY() + dimension.getHeight(),
-					hovered ? 0xAA00FF00 : 0xCCAAAAAA);
+					hovered ? 0xCC00FF00 : 0xCCAAAAAA);
 			Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(element.getName(), pos.getX() + 2, pos.getY() + 2, hovered ? 0xFFFFFF : 0x00FF00);
 		}
 

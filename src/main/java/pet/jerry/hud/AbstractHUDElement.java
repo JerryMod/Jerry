@@ -5,7 +5,7 @@ import pet.jerry.feature.AbstractToggleableFeature;
 public abstract class AbstractHUDElement extends AbstractToggleableFeature implements HUDElement {
 	private final Position position;
 
-	protected AbstractHUDElement(Position position) {
+	public AbstractHUDElement(Position position) {
 		this.position = position;
 	}
 

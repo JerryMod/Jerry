@@ -17,7 +17,7 @@ import pet.jerry.hud.Position;
 @SideOnly(Side.CLIENT)
 public class HUDRenderListener {
 	@SubscribeEvent
-	public void renderGameOverlay(RenderGameOverlayEvent event) {
+	public void renderGameOverlay(RenderGameOverlayEvent.Text event) {
 		if(Minecraft.getMinecraft().currentScreen == null || Minecraft.getMinecraft().currentScreen instanceof HUDEditScreen) {
 			for (Feature feature : Jerry.INSTANCE.getFeatureRegistry().getFeatures()) {
 				if(!(feature instanceof HUDElement))

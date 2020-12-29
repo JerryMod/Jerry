@@ -9,19 +9,23 @@ import net.minecraft.util.Session;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import pet.jerry.command.CataCommand;
 import pet.jerry.command.JerryCommand;
+import pet.jerry.data.SkyBlock;
+import pet.jerry.data.SkyBlockDataListener;
+import pet.jerry.event.SkyBlockConnectionEvent;
 import pet.jerry.feature.FeatureRegistry;
-import pet.jerry.feature.features.AntiWipeFeature;
-import pet.jerry.feature.features.CoordinatesDisplayFeature;
 import pet.jerry.listener.HUDRenderListener;
 import pet.jerry.listener.KeyBindingListener;
 import pet.jerry.listener.ScoreboardListener;
 
 import java.lang.reflect.Field;
 import java.net.Proxy;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @Mod(
@@ -39,16 +43,20 @@ public class Jerry {
 
 	private final FeatureRegistry featureRegistry = new FeatureRegistry();
 
+	private final List<Object> skyBlockListeners = Collections.unmodifiableList(Arrays.asList(
+			new SkyBlockDataListener(),
+			new HUDRenderListener()
+	));
+
+	private SkyBlock skyBlock;
+
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ClientCommandHandler.instance.registerCommand(new JerryCommand());
 		ClientCommandHandler.instance.registerCommand(new CataCommand());
 
-		featureRegistry.registerFeature(new AntiWipeFeature());
-		featureRegistry.registerFeature(new CoordinatesDisplayFeature());
-
+		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(new ScoreboardListener());
-		MinecraftForge.EVENT_BUS.register(new HUDRenderListener());
 		MinecraftForge.EVENT_BUS.register(new KeyBindingListener());
 
 		if (System.getenv().containsKey("MINECRAFT_USERNAME")
@@ -85,15 +93,27 @@ public class Jerry {
 		}
 	}
 
-	/**
-	 * This is the final initialization event. Register actions from other mods here
-	 */
-	@Mod.EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-
+	public SkyBlock getSkyBlock() {
+		return skyBlock;
 	}
-
 	public FeatureRegistry getFeatureRegistry() {
 		return featureRegistry;
+	}
+
+	@SubscribeEvent
+	void onEnterSkyBlock(SkyBlockConnectionEvent.Enter event) {
+		System.out.println("Detected entering SkyBlock.");
+		this.skyBlock = new SkyBlock();
+		for (Object o : skyBlockListeners) {
+			MinecraftForge.EVENT_BUS.register(o);
+		}
+	}
+
+	@SubscribeEvent
+	void onExitSkyBlock(SkyBlockConnectionEvent.Exit event) {
+		for (Object o : skyBlockListeners) {
+			MinecraftForge.EVENT_BUS.unregister(o);
+		}
+		this.skyBlock = null;
 	}
 }

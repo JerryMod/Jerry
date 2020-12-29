@@ -6,8 +6,8 @@ import java.util.function.Supplier;
 public class TextHUDElement extends AbstractHUDElement {
 	private final Supplier<List<String>> supplier;
 
-	public TextHUDElement(Supplier<List<String>> supplier) {
-		super(new Position(0f, 0f));
+	public TextHUDElement(Position position, Supplier<List<String>> supplier) {
+		super(position);
 		this.supplier = supplier;
 	}
 
