@@ -1,7 +1,11 @@
 {
   "compatibilityLevel": "JAVA_8",
   "package": "pet.jerry.mixins",
-  "mixins": ["MixinMinecraft"],
+  "mixins": [
+    "MixinEntityPlayerSP",
+    "MixinGuiContainer",
+    "MixinMinecraft"
+  ],
   "client": [],
   "server": []
 }

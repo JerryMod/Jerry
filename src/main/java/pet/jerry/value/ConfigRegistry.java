@@ -3,14 +3,12 @@ package pet.jerry.value;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public final class ConfigRegistry {
 	private final Set<SaveableContainer> root = new HashSet<>();
@@ -97,7 +95,11 @@ public final class ConfigRegistry {
 					} else {
 						if(saveable instanceof Value<?>) {
 							Value<Object> value = ((Value<Object>) saveable);
-							value.setValue(om.treeToValue(entry.getValue(), value.getType()));
+							Class clazz = value.getType();
+							if(saveable instanceof MultiValue) {
+								clazz = List.class;
+							}
+							value.setValue(om.treeToValue(entry.getValue(), clazz));
 						}
 					}
 				}

@@ -3,10 +3,7 @@ package pet.jerry.feature;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import pet.jerry.event.SkyBlockConnectionEvent;
-import pet.jerry.feature.features.AntiWipeFeature;
-import pet.jerry.feature.features.CoordinatesDisplayFeature;
-import pet.jerry.feature.features.HealthDisplayFeature;
-import pet.jerry.feature.features.SpeedDisplayFeature;
+import pet.jerry.feature.features.*;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,6 +16,8 @@ public final class FeatureRegistry {
 		registerFeature(new AntiWipeFeature());
 		registerFeature(new CoordinatesDisplayFeature());
 		registerFeature(new HealthDisplayFeature());
+		registerFeature(new ManaDisplayFeature());
+		registerFeature(new SlotLockFeature());
 		registerFeature(new SpeedDisplayFeature());
 	}
 

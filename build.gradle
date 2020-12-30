@@ -41,7 +41,7 @@ dependencies {
         exclude module: 'gson'
     }
 
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.0'
+    compile('com.fasterxml.jackson.core:jackson-databind:2.12.0')
 }
 
 processResources {

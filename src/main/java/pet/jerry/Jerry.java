@@ -64,6 +64,7 @@ public class Jerry {
 		ClientCommandHandler.instance.registerCommand(new CataCommand());
 
 		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(featureRegistry);
 		MinecraftForge.EVENT_BUS.register(new ScoreboardListener());
 		MinecraftForge.EVENT_BUS.register(new KeyBindingListener());
 
