@@ -10,6 +10,4 @@ public interface Value<T> extends Saveable<T> {
 	Set<Constraint<T>> getConstraints();
 
 	void addConstraint(Constraint<T> constraint);
-
-	Class<T> getType();
 }

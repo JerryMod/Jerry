@@ -8,7 +8,7 @@ public abstract class AbstractHUDElement extends AbstractToggleableFeature imple
 	private final Value<Position> position;
 
 	public AbstractHUDElement(Position position) {
-		this.position = new SimpleValue<>("Position", "position", position, Position.class);
+		this.position = new SimpleValue<>("Position", "position", position);
 		this.getContainer().add(this.position);
 	}
 

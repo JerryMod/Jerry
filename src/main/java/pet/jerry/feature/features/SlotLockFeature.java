@@ -5,7 +5,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.Slot;
 import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
@@ -15,11 +14,15 @@ import pet.jerry.event.InventorySlotClickEvent;
 import pet.jerry.event.InventorySlotDrawEvent;
 import pet.jerry.event.ItemDropEvent;
 import pet.jerry.feature.AbstractToggleableFeature;
-import pet.jerry.value.MultiValue;
+import pet.jerry.value.SimpleValue;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @FeatureInfo(id = "slot_locking", name = "Slot Locking")
 public class SlotLockFeature extends AbstractToggleableFeature {
-	private final MultiValue<Integer> lockedSlots = new MultiValue<>("Locked Slots", "locked_slots");
+	private final SimpleValue<Set<Integer>> lockedSlots
+			= new SimpleValue<>("Locked Slots", "locked_slots", new HashSet<>());
 	private final KeyBinding slotLockKeybind
 			= new KeyBinding("key.jerry.lockslot", Keyboard.KEY_L, "key.category.jerry");
 
@@ -30,7 +33,7 @@ public class SlotLockFeature extends AbstractToggleableFeature {
 
 	@SubscribeEvent
 	void onSlotClick(InventorySlotClickEvent event) {
-		if (lockedSlots.contains(event.getSlot().getSlotIndex())
+		if (lockedSlots.getValue().contains(event.getSlot().getSlotIndex())
 				&& event.getSlot().inventory.equals(mc.thePlayer.inventory)) {
 			mc.thePlayer.playSound("mob.villager.no", 1f, 1f);
 			event.setCanceled(true);
@@ -41,7 +44,7 @@ public class SlotLockFeature extends AbstractToggleableFeature {
 	@SubscribeEvent
 	void onSlotDraw(InventorySlotDrawEvent.Pre event) {
 		Slot slot = event.getSlot();
-		if (lockedSlots.contains(slot.getSlotIndex())
+		if (lockedSlots.getValue().contains(slot.getSlotIndex())
 				&& event.getSlot().inventory.equals(mc.thePlayer.inventory)) {
 			Gui.drawRect(slot.xDisplayPosition, slot.yDisplayPosition,
 					slot.xDisplayPosition + 16, slot.yDisplayPosition + 16, 0x99FF0000);
@@ -50,7 +53,7 @@ public class SlotLockFeature extends AbstractToggleableFeature {
 
 	@SubscribeEvent
 	void onDrop(ItemDropEvent event) {
-		if(lockedSlots.contains(mc.thePlayer.inventory.currentItem) && Jerry.INSTANCE.getSkyBlock().getCurrentDungeon() == null) {
+		if (lockedSlots.getValue().contains(mc.thePlayer.inventory.currentItem) && Jerry.INSTANCE.getSkyBlock().getCurrentDungeon() == null) {
 			event.setCanceled(true);
 		}
 	}
@@ -60,13 +63,13 @@ public class SlotLockFeature extends AbstractToggleableFeature {
 		if (event.gui instanceof GuiContainer && Keyboard.isKeyDown(this.slotLockKeybind.getKeyCode())) {
 			event.setCanceled(true);
 			Slot slot = ((GuiContainer) event.gui).getSlotUnderMouse();
-			if(!slot.inventory.equals(mc.thePlayer.inventory))
+			if (!slot.inventory.equals(mc.thePlayer.inventory))
 				return;
 
-			if (lockedSlots.contains(slot.getSlotIndex())) {
-				lockedSlots.remove(slot.getSlotIndex());
+			if (lockedSlots.getValue().contains(slot.getSlotIndex())) {
+				lockedSlots.getValue().remove(slot.getSlotIndex());
 			} else {
-				lockedSlots.add(slot.getSlotIndex());
+				lockedSlots.getValue().add(slot.getSlotIndex());
 			}
 		}
 	}

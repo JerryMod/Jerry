@@ -14,6 +14,10 @@ public class TextHUDElement extends AbstractHUDElement {
 		this.getContainer().add(textColour);
 	}
 
+	public TextHUDElement(Supplier<List<String>> supplier) {
+		this(new Position(0f, 0f), supplier);
+	}
+
 	protected NamedColour getTextColour() {
 		return textColour;
 	}

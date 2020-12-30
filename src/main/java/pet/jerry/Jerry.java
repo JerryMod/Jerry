@@ -103,6 +103,7 @@ public class Jerry {
 
 		try {
 			this.configRegistry.load();
+			this.configRegistry.save();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

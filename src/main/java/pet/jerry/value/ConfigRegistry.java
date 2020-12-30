@@ -20,7 +20,7 @@ public final class ConfigRegistry {
 		this.configDirectory = new File(configDirectory, "jerry");
 		if(!configDirectory.exists())
 			configDirectory.mkdirs();
-		this.configFile = new File(configDirectory, "jerry.config.json");
+		this.configFile = new File(this.configDirectory, "jerry.config.json");
 	}
 
 	public void register(SaveableContainer container) {
@@ -95,11 +95,7 @@ public final class ConfigRegistry {
 					} else {
 						if(saveable instanceof Value<?>) {
 							Value<Object> value = ((Value<Object>) saveable);
-							Class clazz = value.getType();
-							if(saveable instanceof MultiValue) {
-								clazz = List.class;
-							}
-							value.setValue(om.treeToValue(entry.getValue(), clazz));
+							value.setValue(om.treeToValue(entry.getValue(), value.getValue().getClass()));
 						}
 					}
 				}

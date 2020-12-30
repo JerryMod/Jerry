@@ -72,6 +72,7 @@ public class HUDEditScreen extends GuiScreen {
 			prevMouseX = mouseX - position.getX();
 			prevMouseY = mouseY - position.getY();
 			isDragging = true;
+			mc.thePlayer.playSound("random.click", 1f, 0.8f);
 		}
 	}
 
@@ -84,8 +85,15 @@ public class HUDEditScreen extends GuiScreen {
 
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int state) {
+		if(hoveredElement != null && isDragging)
+			mc.thePlayer.playSound("random.click", 1f, 1.2f);
 		hoveredElement = null;
 		isDragging = false;
+	}
+
+	@Override
+	public boolean doesGuiPauseGame() {
+		return false;
 	}
 
 	private void drawRectFloats(float left, float top, float right, float bottom, int color) {

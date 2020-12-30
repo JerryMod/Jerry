@@ -8,15 +8,13 @@ public class SimpleValue<T> implements Value<T> {
 	private final String name;
 	private final String id;
 	private final Set<Constraint<T>> constraints = new HashSet<>();
-	private final Class<T> typeClass;
 	private T value;
 
 	@SafeVarargs
-	public SimpleValue(String name, String id, T value, Class<T> typeClass, Constraint<T>... constraints) {
+	public SimpleValue(String name, String id, T value, Constraint<T>... constraints) {
 		this.name = name;
 		this.id = id;
 		this.value = value;
-		this.typeClass = typeClass;
 		this.constraints.addAll(Arrays.asList(constraints));
 	}
 
@@ -54,10 +52,5 @@ public class SimpleValue<T> implements Value<T> {
 	@Override
 	public void addConstraint(Constraint<T> constraint) {
 		constraints.add(constraint);
-	}
-
-	@Override
-	public Class<T> getType() {
-		return typeClass;
 	}
 }

@@ -15,7 +15,7 @@ public class JerryToggleSubCommand extends JerrySubCommand {
 	@Override
 	public void onExecute(String[] args) throws CommandException {
 		if(args.length < 1) {
-			throw new CommandException("You need at least one argument for this command.");
+			throw new CommandException("jerry.subcommand.toggle.args");
 		} else {
 			Feature feature = Jerry.INSTANCE.getFeatureRegistry().getFeatureByID(args[0]);
 			if(null == feature) {
@@ -23,7 +23,7 @@ public class JerryToggleSubCommand extends JerrySubCommand {
 			}
 
 			if(!(feature instanceof AbstractToggleableFeature)) {
-				throw new CommandException("That feature cannot be toggled!");
+				throw new CommandException("jerry.subcommand.toggle.not_toggleable");
 			}
 
 			AbstractToggleableFeature toggleableFeature = (AbstractToggleableFeature) feature;

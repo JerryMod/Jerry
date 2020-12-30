@@ -18,7 +18,7 @@ import pet.jerry.hud.Position;
 public class HUDRenderListener {
 	@SubscribeEvent
 	public void renderGameOverlay(RenderGameOverlayEvent.Text event) {
-		if(Minecraft.getMinecraft().currentScreen == null || Minecraft.getMinecraft().currentScreen instanceof HUDEditScreen) {
+		if(Minecraft.getMinecraft().currentScreen == null) {
 			for (Feature feature : Jerry.INSTANCE.getFeatureRegistry().getFeatures()) {
 				if(!(feature instanceof HUDElement))
 					continue;
@@ -32,6 +32,13 @@ public class HUDRenderListener {
 				Position pos = element.getPosition().toAbsolute(dimension);
 				element.draw(pos.getX(), pos.getY());
 			}
+		}
+	}
+
+	@SubscribeEvent
+	void renderHunger(RenderGameOverlayEvent event) {
+		if(event.type.equals(RenderGameOverlayEvent.ElementType.FOOD)) {
+			event.setCanceled(true);
 		}
 	}
 }

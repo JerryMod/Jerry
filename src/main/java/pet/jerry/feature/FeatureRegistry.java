@@ -15,6 +15,7 @@ public final class FeatureRegistry {
 	public FeatureRegistry() {
 		registerFeature(new AntiWipeFeature());
 		registerFeature(new CoordinatesDisplayFeature());
+		registerFeature(new DefenceDisplayFeature());
 		registerFeature(new HealthDisplayFeature());
 		registerFeature(new ManaDisplayFeature());
 		registerFeature(new SlotLockFeature());

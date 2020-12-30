@@ -53,7 +53,7 @@ public class JerryCommand implements ICommand {
 		if (args.length >= 1) {
 			JerrySubCommand subCommand = this.getSubCommand(args[0]);
 			if (null == subCommand) {
-				throw new CommandException("Subcommand not found!");
+				throw new CommandException("jerry.subcommand.notfound");
 			} else {
 				if (args.length > 1)
 					args = Arrays.copyOfRange(args, 1, args.length);
