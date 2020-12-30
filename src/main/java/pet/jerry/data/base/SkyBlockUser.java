@@ -1,4 +1,4 @@
-package pet.jerry.data;
+package pet.jerry.data.base;
 
 import java.util.UUID;
 

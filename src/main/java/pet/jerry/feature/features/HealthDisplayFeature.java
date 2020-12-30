@@ -11,8 +11,9 @@ import java.util.Collections;
 public class HealthDisplayFeature extends TextHUDElement {
 	public HealthDisplayFeature() {
 		super(new Position(0.1f, 0.2f), () -> Collections.singletonList(
-				Jerry.INSTANCE.getSkyBlock().getOurUser().getHealth()
-						+ " / " + Jerry.INSTANCE.getSkyBlock().getOurUser().getMaxHealth()
+				Jerry.INSTANCE.getSkyBlock().getPlayingUser().getHealth()
+						+ " / " + Jerry.INSTANCE.getSkyBlock().getPlayingUser().getMaxHealth()
 		));
+		this.getTextColour().setColour(0xFF0000);
 	}
 }

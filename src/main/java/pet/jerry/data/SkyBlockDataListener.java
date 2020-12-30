@@ -6,6 +6,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import pet.jerry.Jerry;
+import pet.jerry.data.base.PlayingSkyBlockUser;
+import pet.jerry.data.mock.MockPlayingSkyBlockUser;
 
 @SideOnly(Side.CLIENT)
 public class SkyBlockDataListener {
@@ -14,6 +16,9 @@ public class SkyBlockDataListener {
 	@SubscribeEvent
 	public void onEvent(ClientChatReceivedEvent event) {
 		if (event.type == 2) {
+			if(!(Jerry.INSTANCE.getSkyBlock().getPlayingUser() instanceof DefaultPlayingSkyBlockUser))
+				return;
+
 			String actionBar = event.message.getFormattedText();
 			String[] actionBarSplit = actionBar.split(" ");
 			for (String piece : actionBarSplit) {
@@ -22,7 +27,7 @@ public class SkyBlockDataListener {
 				if(trimmed.isEmpty())
 					continue;
 
-				OurSkyBlockUser skyBlockUser = Jerry.INSTANCE.getSkyBlock().getOurUser();
+				DefaultPlayingSkyBlockUser skyBlockUser = (DefaultPlayingSkyBlockUser) Jerry.INSTANCE.getSkyBlock().getPlayingUser();
 				if(trimmed.endsWith("❤")) {
 					parseAndSetHealth(trimmed.substring(0, trimmed.length() - 1), skyBlockUser);
 				} else if(trimmed.endsWith("❈")) {
@@ -35,7 +40,7 @@ public class SkyBlockDataListener {
 		}
 	}
 
-	private void parseAndSetHealth(String actionBarSegment, OurSkyBlockUser skyBlockUser) throws NumberFormatException {
+	private void parseAndSetHealth(String actionBarSegment, DefaultPlayingSkyBlockUser skyBlockUser) throws NumberFormatException {
 		String[] split = actionBarSegment.split("/", 2);
 		int currentHealth = Integer.parseInt(split[0]);
 		int maxHealth = Integer.parseInt(split[1]);
@@ -43,12 +48,12 @@ public class SkyBlockDataListener {
 		skyBlockUser.setMaxHealth(maxHealth);
 	}
 
-	private void parseAndSetDefence(String actionBarSegment, OurSkyBlockUser skyBlockUser) throws NumberFormatException {
+	private void parseAndSetDefence(String actionBarSegment, DefaultPlayingSkyBlockUser skyBlockUser) throws NumberFormatException {
 		int defence = Integer.parseInt(actionBarSegment);
 		skyBlockUser.setDefence(defence);
 	}
 
-	private void parseAndSetMana(String actionBarSegment, OurSkyBlockUser skyBlockUser) throws NumberFormatException {
+	private void parseAndSetMana(String actionBarSegment, DefaultPlayingSkyBlockUser skyBlockUser) throws NumberFormatException {
 		String[] split = actionBarSegment.split("/", 2);
 		int currentMana = Integer.parseInt(split[0]);
 		int maxMana = Integer.parseInt(split[1]);

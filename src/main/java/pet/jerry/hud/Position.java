@@ -1,5 +1,7 @@
 package pet.jerry.hud;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 
@@ -7,7 +9,8 @@ public class Position {
 	private float x;
 	private float y;
 
-	public Position(float x, float y) {
+	@JsonCreator
+	public Position(@JsonProperty("x") float x, @JsonProperty("y") float y) {
 		this.x = x;
 		this.y = y;
 	}

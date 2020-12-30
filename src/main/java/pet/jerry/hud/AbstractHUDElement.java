@@ -1,16 +1,19 @@
 package pet.jerry.hud;
 
 import pet.jerry.feature.AbstractToggleableFeature;
+import pet.jerry.value.SimpleValue;
+import pet.jerry.value.Value;
 
 public abstract class AbstractHUDElement extends AbstractToggleableFeature implements HUDElement {
-	private final Position position;
+	private final Value<Position> position;
 
 	public AbstractHUDElement(Position position) {
-		this.position = position;
+		this.position = new SimpleValue<>("Position", "position", position, Position.class);
+		this.getContainer().add(this.position);
 	}
 
 	@Override
 	public Position getPosition() {
-		return position;
+		return position.getValue();
 	}
 }

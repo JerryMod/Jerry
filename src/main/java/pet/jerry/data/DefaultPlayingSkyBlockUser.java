@@ -1,21 +1,26 @@
 package pet.jerry.data;
 
 import net.minecraft.client.Minecraft;
+import pet.jerry.data.base.PlayingSkyBlockUser;
+import pet.jerry.data.base.SkyBlockUser;
 
 import java.util.UUID;
 
-public class OurSkyBlockUser implements SkyBlockUser {
+public class DefaultPlayingSkyBlockUser implements PlayingSkyBlockUser {
 	private static final Minecraft mc = Minecraft.getMinecraft();
+
 	private final UUID uuid = mc.thePlayer.getGameProfile().getId();
 	private final String username = mc.thePlayer.getGameProfile().getName();
+
 	private int health = 0;
 	private int maxHealth = 0;
+
 	private int defence = 0;
 
 	private int mana = 0;
 	private int maxMana = 0;
 
-	OurSkyBlockUser() { }
+	DefaultPlayingSkyBlockUser() { }
 
 	@Override
 	public UUID getUUID() {
@@ -32,22 +37,27 @@ public class OurSkyBlockUser implements SkyBlockUser {
 		return health;
 	}
 
+	@Override
 	public int getMaxHealth() {
 		return maxHealth;
 	}
 
+	@Override
 	public int getDefence() {
 		return defence;
 	}
 
+	@Override
 	public int getMana() {
 		return mana;
 	}
 
+	@Override
 	public int getMaxMana() {
 		return maxMana;
 	}
 
+	@Override
 	public int getSpeed() {
 		return Math.round(mc.thePlayer.capabilities.getWalkSpeed() * 1000);
 	}

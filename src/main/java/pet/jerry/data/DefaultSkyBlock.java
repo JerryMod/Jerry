@@ -1,14 +1,17 @@
 package pet.jerry.data;
 
 import net.minecraftforge.common.MinecraftForge;
+import pet.jerry.data.base.Dungeon;
+import pet.jerry.data.base.SkyBlock;
 import pet.jerry.event.DungeonConnectionEvent;
 
-public class SkyBlock {
-	private final OurSkyBlockUser ourUser = new OurSkyBlockUser();
+public class DefaultSkyBlock implements SkyBlock {
+	private final DefaultPlayingSkyBlockUser ourUser = new DefaultPlayingSkyBlockUser();
 	private String location;
 	private String skyBlockDate;
 	private Dungeon currentDungeon = null;
 
+	@Override
 	public String getLocation() {
 		return location;
 	}
@@ -25,10 +28,12 @@ public class SkyBlock {
 		this.location = location;
 	}
 
-	public OurSkyBlockUser getOurUser() {
+	@Override
+	public DefaultPlayingSkyBlockUser getPlayingUser() {
 		return ourUser;
 	}
 
+	@Override
 	public String getSkyBlockDate() {
 		return skyBlockDate;
 	}
@@ -37,11 +42,12 @@ public class SkyBlock {
 		this.skyBlockDate = skyBlockDate;
 	}
 
+	@Override
 	public Dungeon getCurrentDungeon() {
 		return currentDungeon;
 	}
 
-	void setCurrentDungeon(Dungeon currentDungeon) {
+	void setCurrentDungeon(DefaultDungeon currentDungeon) {
 		this.currentDungeon = currentDungeon;
 	}
 }

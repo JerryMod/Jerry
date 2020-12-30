@@ -6,6 +6,8 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
 import pet.jerry.command.subcommands.JerryAboutSubCommand;
+import pet.jerry.command.subcommands.JerryLoadSubCommand;
+import pet.jerry.command.subcommands.JerrySaveSubCommand;
 import pet.jerry.command.subcommands.JerryToggleSubCommand;
 import pet.jerry.util.Utils;
 
@@ -17,6 +19,8 @@ public class JerryCommand implements ICommand {
 	public JerryCommand() {
 		subCommands.add(new JerryAboutSubCommand());
 		subCommands.add(new JerryToggleSubCommand());
+		subCommands.add(new JerrySaveSubCommand());
+		subCommands.add(new JerryLoadSubCommand());
 	}
 
 	private JerrySubCommand getSubCommand(String name) {

@@ -13,14 +13,18 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import pet.jerry.command.CataCommand;
 import pet.jerry.command.JerryCommand;
-import pet.jerry.data.SkyBlock;
+import pet.jerry.data.DefaultSkyBlock;
 import pet.jerry.data.SkyBlockDataListener;
+import pet.jerry.data.base.SkyBlock;
+import pet.jerry.data.mock.MockSkyBlock;
 import pet.jerry.event.SkyBlockConnectionEvent;
 import pet.jerry.feature.FeatureRegistry;
 import pet.jerry.listener.HUDRenderListener;
 import pet.jerry.listener.KeyBindingListener;
 import pet.jerry.listener.ScoreboardListener;
+import pet.jerry.value.ConfigRegistry;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.Proxy;
 import java.util.Arrays;
@@ -41,17 +45,21 @@ public class Jerry {
 	@Mod.Instance(MOD_ID)
 	public static Jerry INSTANCE;
 
-	private final FeatureRegistry featureRegistry = new FeatureRegistry();
+	private FeatureRegistry featureRegistry;
+	private ConfigRegistry configRegistry;
 
 	private final List<Object> skyBlockListeners = Collections.unmodifiableList(Arrays.asList(
 			new SkyBlockDataListener(),
 			new HUDRenderListener()
 	));
 
-	private SkyBlock skyBlock;
+	private SkyBlock skyBlock = new MockSkyBlock();
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		this.configRegistry = new ConfigRegistry(event.getModConfigurationDirectory());
+		this.featureRegistry = new FeatureRegistry();
+
 		ClientCommandHandler.instance.registerCommand(new JerryCommand());
 		ClientCommandHandler.instance.registerCommand(new CataCommand());
 
@@ -91,19 +99,38 @@ public class Jerry {
 				}
 			}
 		}
+
+		try {
+			this.configRegistry.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			try {
+				this.configRegistry.save();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}));
 	}
 
 	public SkyBlock getSkyBlock() {
 		return skyBlock;
 	}
+
 	public FeatureRegistry getFeatureRegistry() {
 		return featureRegistry;
+	}
+
+	public ConfigRegistry getConfigRegistry() {
+		return configRegistry;
 	}
 
 	@SubscribeEvent
 	void onEnterSkyBlock(SkyBlockConnectionEvent.Enter event) {
 		System.out.println("Detected entering SkyBlock.");
-		this.skyBlock = new SkyBlock();
+		this.skyBlock = new DefaultSkyBlock();
 		for (Object o : skyBlockListeners) {
 			MinecraftForge.EVENT_BUS.register(o);
 		}
@@ -114,6 +141,6 @@ public class Jerry {
 		for (Object o : skyBlockListeners) {
 			MinecraftForge.EVENT_BUS.unregister(o);
 		}
-		this.skyBlock = null;
+		this.skyBlock = new MockSkyBlock();
 	}
 }

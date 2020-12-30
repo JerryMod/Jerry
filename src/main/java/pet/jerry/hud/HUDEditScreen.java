@@ -47,10 +47,11 @@ public class HUDEditScreen extends GuiScreen {
 
 			drawRectFloats(pos.getX(), pos.getY(), pos.getX() + dimension.getWidth(), pos.getY() + dimension.getHeight(),
 					hovered ? 0xCC00FF00 : 0xCCAAAAAA);
-			Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(element.getName(), pos.getX() + 2, pos.getY() + 2, hovered ? 0xFFFFFF : 0x00FF00);
+			//Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(element.getName(), pos.getX() + 2, pos.getY() + 2, hovered ? 0xFFFFFF : 0x00FF00);
+			element.draw(pos.getX(), pos.getY());
 		}
 
-		if(!anyHovered)
+		if(!anyHovered && !isDragging)
 			hoveredElement = null;
 
 		if(null != hoveredElement && isDragging) {
