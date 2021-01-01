@@ -4,6 +4,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import pet.jerry.event.SkyBlockConnectionEvent;
 import pet.jerry.feature.features.*;
+import pet.jerry.feature.features.bar.HealthBarFeature;
+import pet.jerry.feature.features.bar.ManaBarFeature;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,7 +18,9 @@ public final class FeatureRegistry {
 		registerFeature(new AntiWipeFeature());
 		registerFeature(new CoordinatesDisplayFeature());
 		registerFeature(new DefenceDisplayFeature());
+		registerFeature(new HealthBarFeature());
 		registerFeature(new HealthDisplayFeature());
+		registerFeature(new ManaBarFeature());
 		registerFeature(new ManaDisplayFeature());
 		registerFeature(new SlotLockFeature());
 		registerFeature(new SpeedDisplayFeature());

@@ -8,5 +8,4 @@ public interface HUDElement extends Named {
 	void draw(float x, float y);
 	Dimension getDimension();
 	Position getPosition();
-	List<NamedColour> getColours();
 }

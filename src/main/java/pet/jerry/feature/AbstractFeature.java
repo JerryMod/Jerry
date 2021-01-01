@@ -18,11 +18,18 @@ public abstract class AbstractFeature implements Feature {
 			FeatureInfo info = this.getClass().getAnnotation(FeatureInfo.class);
 			this.id = info.id();
 			this.name = info.name();
-			this.container  = new SaveableContainer(info.name(), info.id());
+			this.container  = new SaveableContainer(name, id);
 			Jerry.INSTANCE.getConfigRegistry().register(this.container);
 		} else {
 			throw new RuntimeException("@FeatureInfo annotation missing from " + this.getClass().getCanonicalName());
 		}
+	}
+
+	public AbstractFeature(String id, String name) {
+		this.id = id;
+		this.name = name;
+		this.container  = new SaveableContainer(name, id);
+		Jerry.INSTANCE.getConfigRegistry().register(this.container);
 	}
 
 	@Override

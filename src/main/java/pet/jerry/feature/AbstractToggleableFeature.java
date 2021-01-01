@@ -10,6 +10,11 @@ public abstract class AbstractToggleableFeature extends AbstractFeature implemen
 		this.getContainer().add(enabled);
 	}
 
+	public AbstractToggleableFeature(String id, String name) {
+		super(id, name);
+		this.getContainer().add(enabled);
+	}
+
 	@Override
 	public boolean isEnabled() {
 		return enabled.getValue();

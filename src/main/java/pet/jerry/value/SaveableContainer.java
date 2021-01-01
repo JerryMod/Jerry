@@ -1,7 +1,6 @@
 package pet.jerry.value;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class SaveableContainer implements Saveable<Set<Saveable<?>>> {
 	private final Set<Saveable<?>> contents = new HashSet<>();
@@ -28,7 +27,11 @@ public class SaveableContainer implements Saveable<Set<Saveable<?>>> {
 		return contents;
 	}
 
-	public void add(Saveable<?> saveable) {
-		this.contents.add(saveable);
+	public void add(Saveable<?>... saveables) {
+		this.contents.addAll(Arrays.asList(saveables));
+	}
+
+	public void add(Collection<Saveable<?>> saveables) {
+		this.contents.addAll(saveables);
 	}
 }

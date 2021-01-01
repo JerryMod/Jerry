@@ -1,6 +1,5 @@
 package pet.jerry.hud;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -42,10 +41,5 @@ public class TextHUDElement extends AbstractHUDElement {
 				maxWidth = w;
 		}
 		return new Dimension(maxWidth + 4, (mc.fontRendererObj.FONT_HEIGHT + 2) * textToDraw.size());
-	}
-
-	@Override
-	public List<NamedColour> getColours() {
-		return Collections.singletonList(textColour);
 	}
 }
