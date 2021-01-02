@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import pet.jerry.Jerry;
 import pet.jerry.core.Toggleable;
@@ -19,6 +20,15 @@ public class HUDEditScreen extends GuiScreen {
 	private HUDElement hoveredElement;
 	private float prevMouseX, prevMouseY;
 	private boolean isDragging;
+	private GuiScreen parent;
+
+	public HUDEditScreen() {
+		this(null);
+	}
+
+	public HUDEditScreen(GuiScreen parent) {
+		this.parent = parent;
+	}
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -94,6 +104,16 @@ public class HUDEditScreen extends GuiScreen {
 	@Override
 	public boolean doesGuiPauseGame() {
 		return false;
+	}
+
+	@Override
+	protected void keyTyped(char typedChar, int keyCode) throws IOException {
+		if(keyCode == Keyboard.KEY_ESCAPE) {
+			mc.displayGuiScreen(parent);
+			if(parent == null) {
+				mc.setIngameFocus();
+			}
+		}
 	}
 
 	private void drawRectFloats(float left, float top, float right, float bottom, int color) {

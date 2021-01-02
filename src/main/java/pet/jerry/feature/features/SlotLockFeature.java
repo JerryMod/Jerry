@@ -35,12 +35,13 @@ public class SlotLockFeature extends AbstractToggleableFeature {
 	private final SimpleValue<Style> style
 			= new SimpleValue<>("Style", "style", Style.LOCK);
 	private final NamedColour lockedSlotColour
-			= new NamedColour("Locked Slot Colour", "locked_slot_colour");
+			= new NamedColour("Locked Slot Colour", "locked_slot_colour", true);
 	private final KeyBinding slotLockKeybind
 			= new KeyBinding("key.jerry.lockslot", Keyboard.KEY_L, "key.category.jerry");
 
 	public SlotLockFeature() {
 		this.getContainer().add(lockedSlots, allowUlt, style, lockedSlotColour);
+		this.lockedSlotColour.setColour(0x40ff0000);
 		ClientRegistry.registerKeyBinding(slotLockKeybind);
 	}
 
@@ -78,7 +79,7 @@ public class SlotLockFeature extends AbstractToggleableFeature {
 			GlStateManager.enableAlpha();
 			GlStateManager.enableBlend();
 			GlStateManager.disableDepth();
-			GlStateManager.color(1f, 0.1f, 0.1f, 0.3f);
+			this.lockedSlotColour.applyGL();
 			mc.getTextureManager().bindTexture(LOCK_IMG);
 			int dimension = 14;
 			Gui.drawModalRectWithCustomSizedTexture(slot.xDisplayPosition + 1, slot.yDisplayPosition + 1,
