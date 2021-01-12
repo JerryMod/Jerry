@@ -9,4 +9,6 @@ public interface Dungeon {
 	int getFloor();
 	Set<DungeonSkyBlockUser> getDungeonTeam();
 	DungeonType getDungeonType();
+	int getSecretsFound();
+	int getCryptsDestroyed();
 }

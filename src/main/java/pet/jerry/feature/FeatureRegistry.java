@@ -6,17 +6,20 @@ import pet.jerry.event.SkyBlockConnectionEvent;
 import pet.jerry.feature.features.*;
 import pet.jerry.feature.features.bar.HealthBarFeature;
 import pet.jerry.feature.features.bar.ManaBarFeature;
+import pet.jerry.feature.features.stat.*;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public final class FeatureRegistry {
-	private final Set<Feature> features = new HashSet<>();
+	private final List<Feature> features = new ArrayList<>();
 
 	public FeatureRegistry() {
 		registerFeature(new AntiWipeFeature());
+		registerFeature(new AttackSpeedDisplayFeature());
 		registerFeature(new CoordinatesDisplayFeature());
+		registerFeature(new CritChanceDisplayFeature());
+		registerFeature(new CritDamageDisplayFeature());
+		registerFeature(new CrowdSilencerFeature());
 		registerFeature(new DefenceDisplayFeature());
 		registerFeature(new HealthBarFeature());
 		registerFeature(new HealthDisplayFeature());
@@ -24,6 +27,7 @@ public final class FeatureRegistry {
 		registerFeature(new ManaDisplayFeature());
 		registerFeature(new SlotLockFeature());
 		registerFeature(new SpeedDisplayFeature());
+		registerFeature(new StrengthDisplayFeature());
 	}
 
 	public void registerFeature(Feature feature) {
@@ -45,8 +49,8 @@ public final class FeatureRegistry {
 		return f instanceof AbstractToggleableFeature && ((AbstractToggleableFeature) f).isEnabled();
 	}
 
-	public Set<Feature> getFeatures() {
-		return Collections.unmodifiableSet(features);
+	public List<Feature> getFeatures() {
+		return Collections.unmodifiableList(features);
 	}
 
 	@SubscribeEvent

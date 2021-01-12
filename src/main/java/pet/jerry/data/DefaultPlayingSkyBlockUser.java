@@ -12,6 +12,8 @@ public class DefaultPlayingSkyBlockUser implements PlayingSkyBlockUser {
 	private final UUID uuid = mc.thePlayer.getGameProfile().getId();
 	private final String username = mc.thePlayer.getGameProfile().getName();
 
+	private String currentIsland;
+
 	private int health = 0;
 	private int maxHealth = 0;
 
@@ -19,6 +21,11 @@ public class DefaultPlayingSkyBlockUser implements PlayingSkyBlockUser {
 
 	private int mana = 0;
 	private int maxMana = 0;
+
+	private int strength = 0;
+	private int critDamage = 0;
+	private int critChance = 0;
+	private int attackSpeed = 0;
 
 	DefaultPlayingSkyBlockUser() { }
 
@@ -60,6 +67,38 @@ public class DefaultPlayingSkyBlockUser implements PlayingSkyBlockUser {
 	@Override
 	public int getSpeed() {
 		return Math.round(mc.thePlayer.capabilities.getWalkSpeed() * 1000);
+	}
+
+	public int getStrength() {
+		return strength;
+	}
+
+	public int getAttackSpeed() {
+		return attackSpeed;
+	}
+
+	public int getCritChance() {
+		return critChance;
+	}
+
+	public int getCritDamage() {
+		return critDamage;
+	}
+
+	void setAttackSpeed(int attackSpeed) {
+		this.attackSpeed = attackSpeed;
+	}
+
+	void setCritChance(int critChance) {
+		this.critChance = critChance;
+	}
+
+	void setCritDamage(int critDamage) {
+		this.critDamage = critDamage;
+	}
+
+	void setStrength(int strength) {
+		this.strength = strength;
 	}
 
 	void setHealth(int health) {

@@ -45,6 +45,26 @@ public class MockPlayingSkyBlockUser implements PlayingSkyBlockUser {
 	}
 
 	@Override
+	public int getStrength() {
+		return 890;
+	}
+
+	@Override
+	public int getCritChance() {
+		return 75;
+	}
+
+	@Override
+	public int getCritDamage() {
+		return 135;
+	}
+
+	@Override
+	public int getAttackSpeed() {
+		return 85;
+	}
+
+	@Override
 	public UUID getUUID() {
 		return uuid;
 	}

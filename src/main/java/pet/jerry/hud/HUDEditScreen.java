@@ -12,11 +12,14 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import pet.jerry.Jerry;
 import pet.jerry.core.Toggleable;
+import pet.jerry.data.mock.MockSkyBlock;
 import pet.jerry.feature.Feature;
 
 import java.io.IOException;
 
 public class HUDEditScreen extends GuiScreen {
+	private final MockSkyBlock mockSkyBlock = new MockSkyBlock();
+
 	private HUDElement hoveredElement;
 	private float prevMouseX, prevMouseY;
 	private boolean isDragging;
@@ -41,7 +44,7 @@ public class HUDEditScreen extends GuiScreen {
 				continue;
 
 			HUDElement element = (HUDElement) feature;
-			Dimension dimension = element.getDimension();
+			Dimension dimension = element.getDimension(mockSkyBlock);
 			Position pos = element.getPosition().toAbsolute(dimension);
 
 			boolean hovered = mouseX > pos.getX()
@@ -55,17 +58,18 @@ public class HUDEditScreen extends GuiScreen {
 					hoveredElement = element;
 			}
 
+			GlStateManager.pushMatrix();
 			drawRectFloats(pos.getX(), pos.getY(), pos.getX() + dimension.getWidth(), pos.getY() + dimension.getHeight(),
 					hovered ? 0xCC00FF00 : 0xCCAAAAAA);
-			//Minecraft.getMinecraft().fontRendererObj.drawStringWithShadow(element.getName(), pos.getX() + 2, pos.getY() + 2, hovered ? 0xFFFFFF : 0x00FF00);
-			element.draw(pos.getX(), pos.getY());
+			GlStateManager.popMatrix();
+			element.draw(pos.getX(), pos.getY(), mockSkyBlock);
 		}
 
 		if(!anyHovered && !isDragging)
 			hoveredElement = null;
 
 		if(null != hoveredElement && isDragging) {
-			Dimension dimension = hoveredElement.getDimension();
+			Dimension dimension = hoveredElement.getDimension(mockSkyBlock);
 			Position position = hoveredElement.getPosition();
 			ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft());
 			float x = (((float) mouseX - prevMouseX) / (float) width) + ((dimension.getWidth() / (float) scaledResolution.getScaledWidth()) * position.getX());
@@ -78,7 +82,7 @@ public class HUDEditScreen extends GuiScreen {
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		if(hoveredElement != null) {
-			Position position = hoveredElement.getPosition().toAbsolute(hoveredElement.getDimension());
+			Position position = hoveredElement.getPosition().toAbsolute(hoveredElement.getDimension(mockSkyBlock));
 			prevMouseX = mouseX - position.getX();
 			prevMouseY = mouseY - position.getY();
 			isDragging = true;

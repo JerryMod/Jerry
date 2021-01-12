@@ -24,8 +24,7 @@ public class FeaturesList extends GuiListExtended {
 	public FeaturesList(GuiScreen owner) {
 		super(Minecraft.getMinecraft(), owner.width, owner.height, 32, owner.height - 24, 24);
 		this.owner = owner;
-		List<Feature> featureList =
-				Arrays.asList(Jerry.INSTANCE.getFeatureRegistry().getFeatures().toArray(new Feature[0]));
+		List<Feature> featureList = new ArrayList<>(Jerry.INSTANCE.getFeatureRegistry().getFeatures());
 		featureList.sort(Comparator.comparing(Feature::getName));
 		for (Feature feature : featureList) {
 			this.entries.add(new FeatureEntry(feature));

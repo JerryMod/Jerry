@@ -8,6 +8,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import pet.jerry.Jerry;
 import pet.jerry.core.Toggleable;
+import pet.jerry.data.mock.MockSkyBlock;
 import pet.jerry.feature.Feature;
 import pet.jerry.hud.Dimension;
 import pet.jerry.hud.HUDEditScreen;
@@ -18,7 +19,7 @@ import pet.jerry.hud.Position;
 public class HUDRenderListener {
 	@SubscribeEvent
 	public void renderGameOverlay(RenderGameOverlayEvent.Text event) {
-		if(Minecraft.getMinecraft().currentScreen == null) {
+		if(!(Minecraft.getMinecraft().currentScreen instanceof HUDEditScreen)) {
 			for (Feature feature : Jerry.INSTANCE.getFeatureRegistry().getFeatures()) {
 				if(!(feature instanceof HUDElement))
 					continue;
@@ -28,16 +29,21 @@ public class HUDRenderListener {
 
 				HUDElement element = (HUDElement) feature;
 
-				Dimension dimension = element.getDimension();
+				if(!element.canRender(Jerry.INSTANCE.getSkyBlock()))
+					continue;
+
+				Dimension dimension = element.getDimension(Jerry.INSTANCE.getSkyBlock());
 				Position pos = element.getPosition().toAbsolute(dimension);
-				element.draw(pos.getX(), pos.getY());
+				element.draw(pos.getX(), pos.getY(), Jerry.INSTANCE.getSkyBlock());
 			}
 		}
 	}
 
 	@SubscribeEvent
-	void renderHunger(RenderGameOverlayEvent event) {
+	void overlayRendering(RenderGameOverlayEvent event) {
 		if(event.type.equals(RenderGameOverlayEvent.ElementType.FOOD)) {
+			event.setCanceled(true);
+		} else if(event.type.equals(RenderGameOverlayEvent.ElementType.ARMOR)) {
 			event.setCanceled(true);
 		}
 	}

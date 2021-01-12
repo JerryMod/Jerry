@@ -6,5 +6,8 @@ public interface PlayingSkyBlockUser extends SkyBlockUser {
 	int getDefence();
 	int getMaxHealth();
 	int getSpeed();
-
+	int getStrength();
+	int getCritChance();
+	int getCritDamage();
+	int getAttackSpeed();
 }

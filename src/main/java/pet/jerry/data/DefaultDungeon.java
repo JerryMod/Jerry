@@ -11,6 +11,9 @@ public class DefaultDungeon implements Dungeon {
 	private final int floor;
 	private final DungeonType dungeonType;
 
+	private int secrets = 0;
+	private int crypts = 0;
+
 	DefaultDungeon(int floor, DungeonType dungeonType) {
 		this.floor = floor;
 		this.dungeonType = dungeonType;
@@ -26,5 +29,23 @@ public class DefaultDungeon implements Dungeon {
 
 	public DungeonType getDungeonType() {
 		return dungeonType;
+	}
+
+	@Override
+	public int getCryptsDestroyed() {
+		return crypts;
+	}
+
+	@Override
+	public int getSecretsFound() {
+		return secrets;
+	}
+
+	void setCrypts(int crypts) {
+		this.crypts = crypts;
+	}
+
+	void setSecrets(int secrets) {
+		this.secrets = secrets;
 	}
 }

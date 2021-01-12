@@ -9,7 +9,7 @@ import java.util.Arrays;
 @FeatureInfo(id = "coordinates", name = "Coordinates")
 public class CoordinatesDisplayFeature extends TextHUDElement {
 	public CoordinatesDisplayFeature() {
-		super(new Position(0f, 0f), () -> Arrays.asList(
+		super(new Position(0f, 0f), (skyBlock) -> Arrays.asList(
 				String.format("X: %.1f", mc.thePlayer.posX),
 				String.format("Y: %.1f", mc.thePlayer.posY),
 				String.format("Z: %.1f", mc.thePlayer.posZ))

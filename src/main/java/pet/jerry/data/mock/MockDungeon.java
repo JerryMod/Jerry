@@ -12,7 +12,7 @@ import java.util.UUID;
 public class MockDungeon implements Dungeon {
 	private final Set<DungeonSkyBlockUser> dungeonTeam = new HashSet<>();
 
-	MockDungeon() {
+	public MockDungeon() {
 		dungeonTeam.add(new MockDungeonSkyBlockUser(UUID.fromString("24c725cb-33f9-4932-9f41-24998f07b7ad"),
 				"Papika", DungeonClass.MAGE));
 		dungeonTeam.add(new MockDungeonSkyBlockUser(UUID.fromString("521303e3-3a69-4539-837b-886a3ed24bf5"),
@@ -34,5 +34,15 @@ public class MockDungeon implements Dungeon {
 	@Override
 	public DungeonType getDungeonType() {
 		return DungeonType.CATACOMBS;
+	}
+
+	@Override
+	public int getSecretsFound() {
+		return 23;
+	}
+
+	@Override
+	public int getCryptsDestroyed() {
+		return 6;
 	}
 }

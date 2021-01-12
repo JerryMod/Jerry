@@ -17,14 +17,6 @@ public class DefaultSkyBlock implements SkyBlock {
 	}
 
 	void setLocation(String location) {
-		if(location.equalsIgnoreCase(this.location))
-			return;
-
-		if(location.contains("Catacombs"))
-			MinecraftForge.EVENT_BUS.post(new DungeonConnectionEvent.Enter());
-		else if(this.location.contains("Catacombs"))
-			MinecraftForge.EVENT_BUS.post(new DungeonConnectionEvent.Exit());
-
 		this.location = location;
 	}
 
@@ -47,7 +39,7 @@ public class DefaultSkyBlock implements SkyBlock {
 		return currentDungeon;
 	}
 
-	void setCurrentDungeon(DefaultDungeon currentDungeon) {
+	void setCurrentDungeon(Dungeon currentDungeon) {
 		this.currentDungeon = currentDungeon;
 	}
 }

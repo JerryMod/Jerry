@@ -14,7 +14,7 @@ public class HealthBarFeature extends BarFeature {
 
 	@SubscribeEvent
 	void renderHealth(RenderGameOverlayEvent event) {
-		if (event.type.equals(RenderGameOverlayEvent.ElementType.HEALTH)) {
+		if (event.type.equals(RenderGameOverlayEvent.ElementType.HEALTH) && this.isEnabled()) {
 			event.setCanceled(true);
 		}
 	}

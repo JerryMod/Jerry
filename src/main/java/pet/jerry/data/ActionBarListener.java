@@ -1,6 +1,7 @@
 package pet.jerry.data;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -10,7 +11,7 @@ import pet.jerry.data.base.PlayingSkyBlockUser;
 import pet.jerry.data.mock.MockPlayingSkyBlockUser;
 
 @SideOnly(Side.CLIENT)
-public class SkyBlockDataListener {
+public class ActionBarListener {
 	private static final Minecraft mc = Minecraft.getMinecraft();
 
 	@SubscribeEvent
@@ -22,21 +23,30 @@ public class SkyBlockDataListener {
 			String actionBar = event.message.getFormattedText();
 			String[] actionBarSplit = actionBar.split(" ");
 			for (String piece : actionBarSplit) {
-				String trimmed = piece.trim().replaceAll("\247.", "");
+				String trimmed = piece.trim();
+				String coloursStripped = trimmed.replaceAll("\247.", "");
 
 				if(trimmed.isEmpty())
 					continue;
 
 				DefaultPlayingSkyBlockUser skyBlockUser = (DefaultPlayingSkyBlockUser) Jerry.INSTANCE.getSkyBlock().getPlayingUser();
 				if(trimmed.endsWith("❤")) {
-					parseAndSetHealth(trimmed.substring(0, trimmed.length() - 1), skyBlockUser);
+					if(Jerry.INSTANCE.getFeatureRegistry().isEnabled("health_display"))
+						actionBar = actionBar.replaceAll(trimmed, "");
+					parseAndSetHealth(coloursStripped.substring(0, coloursStripped.length() - 1), skyBlockUser);
 				} else if(trimmed.endsWith("❈")) {
-					parseAndSetDefence(trimmed.substring(0, trimmed.length() - 1), skyBlockUser);
+					if(Jerry.INSTANCE.getFeatureRegistry().isEnabled("defence_display"))
+						actionBar = actionBar.replaceAll(trimmed, "").replaceAll("Defense", "");
+					parseAndSetDefence(coloursStripped.substring(0, coloursStripped.length() - 1), skyBlockUser);
 				} else if(trimmed.endsWith("✎")) {
-					parseAndSetMana(trimmed.substring(0, trimmed.length() - 1), skyBlockUser);
+					if(Jerry.INSTANCE.getFeatureRegistry().isEnabled("mana_display"))
+						actionBar = actionBar.replaceAll(trimmed, "").replaceAll("Mana", "");
+					parseAndSetMana(coloursStripped.substring(0, coloursStripped.length() - 1), skyBlockUser);
 				}
-			}
 
+				actionBar = actionBar.trim();
+				event.message = new ChatComponentText(actionBar);
+			}
 		}
 	}
 

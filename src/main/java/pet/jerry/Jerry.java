@@ -14,14 +14,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import pet.jerry.command.CataCommand;
 import pet.jerry.command.JerryCommand;
 import pet.jerry.data.DefaultSkyBlock;
-import pet.jerry.data.SkyBlockDataListener;
+import pet.jerry.data.ActionBarListener;
+import pet.jerry.data.PlayerListListener;
 import pet.jerry.data.base.SkyBlock;
 import pet.jerry.data.mock.MockSkyBlock;
 import pet.jerry.event.SkyBlockConnectionEvent;
 import pet.jerry.feature.FeatureRegistry;
 import pet.jerry.listener.HUDRenderListener;
 import pet.jerry.listener.KeyBindingListener;
-import pet.jerry.listener.ScoreboardListener;
+import pet.jerry.data.ScoreboardListener;
 import pet.jerry.value.ConfigRegistry;
 
 import java.io.IOException;
@@ -49,8 +50,9 @@ public class Jerry {
 	private ConfigRegistry configRegistry;
 
 	private final List<Object> skyBlockListeners = Collections.unmodifiableList(Arrays.asList(
-			new SkyBlockDataListener(),
-			new HUDRenderListener()
+			new ActionBarListener(),
+			new HUDRenderListener(),
+			new PlayerListListener()
 	));
 
 	private SkyBlock skyBlock = new MockSkyBlock();
