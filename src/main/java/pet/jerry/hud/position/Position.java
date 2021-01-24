@@ -1,4 +1,4 @@
-package pet.jerry.hud;
+package pet.jerry.hud.position;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

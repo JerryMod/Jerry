@@ -3,9 +3,13 @@ package pet.jerry.value;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import pet.jerry.value.serialiser.ColorDeserializer;
+import pet.jerry.value.serialiser.ColorSerializer;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -18,9 +22,12 @@ public final class ConfigRegistry {
 
 	public ConfigRegistry(File configDirectory) {
 		this.configDirectory = new File(configDirectory, "jerry");
-		if(!configDirectory.exists())
-			configDirectory.mkdirs();
 		this.configFile = new File(this.configDirectory, "jerry.config.json");
+		om.registerModule(
+				new SimpleModule()
+						.addDeserializer(Color.class, new ColorDeserializer())
+						.addSerializer(Color.class, new ColorSerializer())
+		);
 	}
 
 	public void register(SaveableContainer container) {
@@ -32,6 +39,12 @@ public final class ConfigRegistry {
 		for (SaveableContainer container : root) {
 			save(container, rootNode);
 		}
+
+		if(!configDirectory.exists())
+			configDirectory.mkdirs();
+
+		if(!configFile.exists())
+			configFile.createNewFile();
 
 		om.writerWithDefaultPrettyPrinter().writeValue(configFile, rootNode);
 	}

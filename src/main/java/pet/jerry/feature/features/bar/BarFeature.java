@@ -3,15 +3,13 @@ package pet.jerry.feature.features.bar;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.MathHelper;
-import pet.jerry.Jerry;
 import pet.jerry.data.base.SkyBlock;
 import pet.jerry.hud.AbstractHUDElement;
-import pet.jerry.hud.Dimension;
-import pet.jerry.hud.NamedColour;
-import pet.jerry.value.BooleanValue;
+import pet.jerry.hud.position.Dimension;
+import pet.jerry.value.NamedColour;
 
 import java.util.Locale;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public abstract class BarFeature extends AbstractHUDElement {
 	private static final int WIDTH = 85;
@@ -19,12 +17,12 @@ public abstract class BarFeature extends AbstractHUDElement {
 	private static final Dimension DIMENSION = new Dimension(WIDTH, HEIGHT);
 
 	private final NamedColour barColour = new NamedColour("Bar Colour", "bar_colour");
-	private final Supplier<Integer> currentValueSupplier;
-	private final Supplier<Integer> maxValueSupplier;
+	private final Function<SkyBlock, Integer> currentValueSupplier;
+	private final Function<SkyBlock, Integer> maxValueSupplier;
 
 	BarFeature(String name,
-	           Supplier<Integer> currentValueSupplier,
-	           Supplier<Integer> maxValueSupplier) {
+	           Function<SkyBlock, Integer> currentValueSupplier,
+	           Function<SkyBlock, Integer> maxValueSupplier) {
 		super(name.toLowerCase(Locale.ROOT) + "_bar_display", name + " Bar Display");
 		this.getContainer().add(barColour);
 		this.currentValueSupplier = currentValueSupplier;
@@ -37,8 +35,8 @@ public abstract class BarFeature extends AbstractHUDElement {
 
 	@Override
 	public void draw(float x, float y, SkyBlock skyBlock) {
-		int currentValue = currentValueSupplier.get();
-		int maxValue = maxValueSupplier.get();
+		int currentValue = currentValueSupplier.apply(skyBlock);
+		int maxValue = maxValueSupplier.apply(skyBlock);
 		float ratio = MathHelper.clamp_float((currentValue / (float) maxValue), 0, 1);
 		float relativeX = this.getPosition().getX();
 

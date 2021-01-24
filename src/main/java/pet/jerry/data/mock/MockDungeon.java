@@ -45,4 +45,9 @@ public class MockDungeon implements Dungeon {
 	public int getCryptsDestroyed() {
 		return 6;
 	}
+
+	@Override
+	public int getTotalDeaths() {
+		return 4;
+	}
 }

@@ -75,6 +75,8 @@ public class PlayerListListener {
 						this.parseIntWithColon(trimmed, dungeon::setSecrets);
 					} else if (trimmed.startsWith("Crypts")) {
 						this.parseIntWithColon(trimmed, dungeon::setCrypts);
+					} else if (trimmed.startsWith("Deaths")) {
+						this.parseIntWithColon(trimmed, dungeon::setDeaths);
 					}
 				}
 			} catch (Exception e) {
@@ -82,12 +84,15 @@ public class PlayerListListener {
 		}
 		if(!foundDungeon) {
 			MinecraftForge.EVENT_BUS.post(new DungeonConnectionEvent.Exit());
-			skyBlock.setCurrentDungeon(new MockDungeon());
+			skyBlock.setCurrentDungeon(null);
 		}
 	}
 
 	private void parseIntWithColon(String s, Consumer<Integer> setter) {
-		String number = s.split(":", 2)[1].trim().substring(1);
+		String number = s.split(":", 2)[1].trim()
+				.replaceAll("\\(", "").replaceAll("\\)", "");
+		if(!Character.isDigit(number.charAt(0)))
+			number = number.substring(1);
 		setter.accept(Integer.parseInt(number));
 	}
 }

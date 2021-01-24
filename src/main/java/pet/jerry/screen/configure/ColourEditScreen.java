@@ -4,7 +4,7 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.client.config.GuiSlider;
 import org.lwjgl.input.Keyboard;
-import pet.jerry.hud.NamedColour;
+import pet.jerry.value.NamedColour;
 
 import java.awt.*;
 import java.io.IOException;

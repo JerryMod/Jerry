@@ -1,4 +1,4 @@
-package pet.jerry.hud;
+package pet.jerry.hud.position;
 
 public class Dimension {
 	private float width;

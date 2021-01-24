@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiListExtended;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import pet.jerry.feature.AbstractFeature;
-import pet.jerry.hud.NamedColour;
+import pet.jerry.value.NamedColour;
 import pet.jerry.value.BooleanValue;
 import pet.jerry.value.Saveable;
 import pet.jerry.value.Value;

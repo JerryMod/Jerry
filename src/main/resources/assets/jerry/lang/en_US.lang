@@ -1,6 +1,7 @@
 key.category.jerry=Jerry
 key.jerry.hud=Edit HUD
 key.jerry.lockslot=Lock Slot
+key.jerry.menu=Jerry Menu
 jerry.subcommand.notfound=Subcommand not found.
 jerry.subcommand.toggle.not_toggleable=That feature is not toggleable!
 jerry.subcommand.toggle.args=You need at least one argument for this command.

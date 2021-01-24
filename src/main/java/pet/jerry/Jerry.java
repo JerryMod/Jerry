@@ -20,9 +20,11 @@ import pet.jerry.data.base.SkyBlock;
 import pet.jerry.data.mock.MockSkyBlock;
 import pet.jerry.event.SkyBlockConnectionEvent;
 import pet.jerry.feature.FeatureRegistry;
+import pet.jerry.hud.group.RenderGroupRegistry;
 import pet.jerry.listener.HUDRenderListener;
 import pet.jerry.listener.KeyBindingListener;
 import pet.jerry.data.ScoreboardListener;
+import pet.jerry.util.RomanNumerals;
 import pet.jerry.value.ConfigRegistry;
 
 import java.io.IOException;
@@ -41,13 +43,14 @@ import java.util.UUID;
 public class Jerry {
 	public static final String MOD_ID = "jerry";
 	public static final String MOD_NAME = "Jerry";
-	public static final String VERSION = "1.0-SNAPSHOT";
+	public static final String VERSION = "0.1.0";
 
 	@Mod.Instance(MOD_ID)
 	public static Jerry INSTANCE;
 
 	private FeatureRegistry featureRegistry;
 	private ConfigRegistry configRegistry;
+	private RenderGroupRegistry renderGroupRegistry;
 
 	private final List<Object> skyBlockListeners = Collections.unmodifiableList(Arrays.asList(
 			new ActionBarListener(),
@@ -55,10 +58,11 @@ public class Jerry {
 			new PlayerListListener()
 	));
 
-	private SkyBlock skyBlock = new MockSkyBlock();
+	private SkyBlock skyBlock = null;
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		this.renderGroupRegistry = new RenderGroupRegistry();
 		this.configRegistry = new ConfigRegistry(event.getModConfigurationDirectory());
 		this.featureRegistry = new FeatureRegistry();
 
@@ -129,6 +133,10 @@ public class Jerry {
 
 	public ConfigRegistry getConfigRegistry() {
 		return configRegistry;
+	}
+
+	public RenderGroupRegistry getRenderGroupRegistry() {
+		return renderGroupRegistry;
 	}
 
 	@SubscribeEvent

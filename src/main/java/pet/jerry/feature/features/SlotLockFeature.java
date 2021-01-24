@@ -7,7 +7,6 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
@@ -17,7 +16,7 @@ import pet.jerry.event.InventorySlotClickEvent;
 import pet.jerry.event.InventorySlotDrawEvent;
 import pet.jerry.event.ItemDropEvent;
 import pet.jerry.feature.AbstractToggleableFeature;
-import pet.jerry.hud.NamedColour;
+import pet.jerry.value.NamedColour;
 import pet.jerry.value.BooleanValue;
 import pet.jerry.value.SimpleValue;
 
@@ -93,8 +92,13 @@ public class SlotLockFeature extends AbstractToggleableFeature {
 
 	@SubscribeEvent
 	void onDrop(ItemDropEvent event) {
+		System.out.println("slot drop event");
+		System.out.println("is locked: " + lockedSlots.getValue().contains(mc.thePlayer.inventory.currentItem));
+		System.out.println("is dungeon: " + (Jerry.INSTANCE.getSkyBlock().getCurrentDungeon() == null));
+		System.out.println("!allow ult value: " + !this.allowUlt.getValue());
 		if (lockedSlots.getValue().contains(mc.thePlayer.inventory.currentItem)
 				&& (Jerry.INSTANCE.getSkyBlock().getCurrentDungeon() == null || !this.allowUlt.getValue())) {
+			System.out.println("cancelled");
 			event.setCanceled(true);
 			playLockedSlotInteractSound();
 		}

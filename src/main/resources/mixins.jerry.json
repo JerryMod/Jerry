@@ -4,7 +4,9 @@
   "mixins": [
     "MixinEntityPlayerSP",
     "MixinGuiContainer",
-    "MixinMinecraft"
+    "MixinMinecraft",
+    "MixinModelBlaze",
+    "MixinTileEntity"
   ],
   "client": [],
   "server": []

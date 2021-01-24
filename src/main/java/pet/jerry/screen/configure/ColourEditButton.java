@@ -3,7 +3,7 @@ package pet.jerry.screen.configure;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import pet.jerry.hud.NamedColour;
+import pet.jerry.value.NamedColour;
 
 public class ColourEditButton extends GuiButton {
 	private final NamedColour colour;

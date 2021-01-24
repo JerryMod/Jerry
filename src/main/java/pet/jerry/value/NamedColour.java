@@ -1,4 +1,4 @@
-package pet.jerry.hud;
+package pet.jerry.value;
 
 import net.minecraft.client.renderer.GlStateManager;
 import pet.jerry.core.Named;
@@ -34,7 +34,7 @@ public class NamedColour extends SaveableContainer implements Named {
 	}
 
 	public int toHex(float alpha) {
-		return this.toHex(alpha * 255);
+		return this.toHex(Math.round(alpha * 255));
 	}
 
 	public int toHex(int alpha) {
@@ -54,9 +54,21 @@ public class NamedColour extends SaveableContainer implements Named {
 	}
 
 	public void applyGL() {
-		GlStateManager.color(((actualColour.getValue() >> 16) & 0xFF) / 255f,
-				((actualColour.getValue() >> 8) & 0xFF) / 255f,
-				(actualColour.getValue() & 0xFF) / 255f,
-				this.allowAlpha ? ((actualColour.getValue() >> 24) & 0xFF) / 255f : 1f);
+		this.applyIntAsGLColours(this.actualColour.getValue());
+	}
+
+	public void applyDarkerGL() {
+		this.applyIntAsGLColours(this.darker());
+	}
+
+	public int darker() {
+		return (actualColour.getValue() & 16579836) >> 2 | actualColour.getValue() & -16777216;
+	}
+
+	private void applyIntAsGLColours(int col) {
+		GlStateManager.color(((col >> 16) & 0xFF) / 255f,
+				((col >> 8) & 0xFF) / 255f,
+				(col & 0xFF) / 255f,
+				this.allowAlpha ? ((col >> 24) & 0xFF) / 255f : 1f);
 	}
 }

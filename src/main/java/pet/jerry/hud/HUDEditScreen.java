@@ -13,7 +13,11 @@ import org.lwjgl.opengl.GL11;
 import pet.jerry.Jerry;
 import pet.jerry.core.Toggleable;
 import pet.jerry.data.mock.MockSkyBlock;
+import pet.jerry.feature.AbstractFeature;
 import pet.jerry.feature.Feature;
+import pet.jerry.hud.position.Dimension;
+import pet.jerry.hud.position.Position;
+import pet.jerry.screen.configure.FeatureConfigurationScreen;
 
 import java.io.IOException;
 
@@ -36,7 +40,7 @@ public class HUDEditScreen extends GuiScreen {
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		boolean anyHovered = false;
-		for (Feature feature : Jerry.INSTANCE.getFeatureRegistry().getFeatures()) {
+		for (Feature feature : Jerry.INSTANCE.getFeatureRegistry().getItems()) {
 			if(!(feature instanceof HUDElement))
 				continue;
 
@@ -77,16 +81,24 @@ public class HUDEditScreen extends GuiScreen {
 			position.setX(MathHelper.clamp_float(x, 0, 1));
 			position.setY(MathHelper.clamp_float(y, 0, 1));
 		}
+
+		this.drawCenteredString(mc.fontRendererObj, "Shift+Click an item to edit its settings", this.width / 2, 4, 0xffffff);
 	}
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		if(hoveredElement != null) {
-			Position position = hoveredElement.getPosition().toAbsolute(hoveredElement.getDimension(mockSkyBlock));
-			prevMouseX = mouseX - position.getX();
-			prevMouseY = mouseY - position.getY();
-			isDragging = true;
-			mc.thePlayer.playSound("random.click", 1f, 0.8f);
+			if ((Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
+				if(hoveredElement instanceof AbstractFeature) {
+					mc.displayGuiScreen(new FeatureConfigurationScreen(this, (AbstractFeature) hoveredElement));
+				}
+			} else {
+				Position position = hoveredElement.getPosition().toAbsolute(hoveredElement.getDimension(mockSkyBlock));
+				prevMouseX = mouseX - position.getX();
+				prevMouseY = mouseY - position.getY();
+				isDragging = true;
+				mc.thePlayer.playSound("random.click", 1f, 0.8f);
+			}
 		}
 	}
 

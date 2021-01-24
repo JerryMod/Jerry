@@ -11,4 +11,5 @@ public interface Dungeon {
 	DungeonType getDungeonType();
 	int getSecretsFound();
 	int getCryptsDestroyed();
+	int getTotalDeaths();
 }

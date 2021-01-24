@@ -7,13 +7,15 @@ import pet.jerry.Jerry;
 public class HealthBarFeature extends BarFeature {
 	public HealthBarFeature() {
 		super("Health",
-				() -> Jerry.INSTANCE.getSkyBlock().getPlayingUser().getHealth(),
-				() -> Jerry.INSTANCE.getSkyBlock().getPlayingUser().getMaxHealth());
+				(skyBlock) -> skyBlock.getPlayingUser().getHealth(),
+				(skyBlock) -> skyBlock.getPlayingUser().getMaxHealth());
 		this.setBarColour(0xFFFF1111);
 	}
 
 	@SubscribeEvent
-	void renderHealth(RenderGameOverlayEvent event) {
+	void renderHealth(RenderGameOverlayEvent.Pre event) {
+		if(event == null || event.type == null) return;
+
 		if (event.type.equals(RenderGameOverlayEvent.ElementType.HEALTH) && this.isEnabled()) {
 			event.setCanceled(true);
 		}
