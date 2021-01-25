@@ -27,7 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: jerry-${PROJECT_VERSION}
-          path: build/libs/jerry-$PROJECT_VERSION-rel.jar
+          path: build/libs/jerry-${{ env.PROJECT_VERSION }}-rel.jar
       - name: Create Release
         if: github.ref == 'refs/heads/master'
         id: create_release
@@ -35,8 +35,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: jerry-$PROJECT_VERSION
-          release_name: Jerry $PROJECT_VERSION
+          tag_name: jerry-${{ env.PROJECT_VERSION }}
+          release_name: Jerry ${{ env.PROJECT_VERSION }}
           draft: false
           prerelease: true
       - name: Upload release
@@ -46,6 +46,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/libs/jerry-$PROJECT_VERSION-rel.jar
-          asset_name: jerry-$PROJECT_VERSION.jar
+          asset_path: build/libs/jerry-${{ env.PROJECT_VERSION }}-rel.jar
+          asset_name: jerry-${{ env.PROJECT_VERSION }}.jar
           asset_content_type: application/java-archive
