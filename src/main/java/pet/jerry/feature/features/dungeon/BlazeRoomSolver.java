@@ -14,7 +14,7 @@ import pet.jerry.event.DungeonConnectionEvent;
 import pet.jerry.event.SkyBlockConnectionEvent;
 import pet.jerry.event.TileEntityPositionSetEvent;
 import pet.jerry.feature.AbstractToggleableFeature;
-import pet.jerry.util.Utils;
+import pet.jerry.value.NamedColour;
 
 import java.util.Comparator;
 import java.util.List;
@@ -22,7 +22,19 @@ import java.util.stream.Collectors;
 
 @FeatureInfo(id = "blaze_solver", name = "Blaze Room Solver")
 public class BlazeRoomSolver extends AbstractToggleableFeature {
+	private final NamedColour nextBlazeColour = new NamedColour("Next Blaze Colour", "next_blaze");
+	private final NamedColour secondNextBlazeColour = new NamedColour("Second Next Blaze Colour", "second_next_blaze");
+	private final NamedColour thirdNextBlazeColour = new NamedColour("Third Next Blaze Colour", "second_next_blaze");
+
 	private BlazeRenderListener listener;
+
+	public BlazeRoomSolver() {
+		this.nextBlazeColour.setColour(0xFF1E20);
+		this.secondNextBlazeColour.setColour(0xFF6920);
+		this.thirdNextBlazeColour.setColour(0xFFBB20);
+
+		this.getContainer().add(nextBlazeColour, secondNextBlazeColour, thirdNextBlazeColour);
+	}
 
 	@SubscribeEvent
 	void onEntitySpawn(TileEntityPositionSetEvent event) {
@@ -37,7 +49,6 @@ public class BlazeRoomSolver extends AbstractToggleableFeature {
 
 				this.listener = new BlazeRenderListener((TileEntityChest) event.getTileEntity(), isAscending ? SortDirection.ASCENDING : SortDirection.DESCENDING);
 				MinecraftForge.EVENT_BUS.register(listener);
-				Utils.addChatMessage("Blaze chest located at " + event.getPos() + ". Starts at top: " + (isAscending ? "yes" : "no"));
 			}
 		}
 	}
@@ -53,7 +64,7 @@ public class BlazeRoomSolver extends AbstractToggleableFeature {
 	}
 
 	private void unlisten() {
-		if(null != listener) {
+		if (null != listener) {
 			MinecraftForge.EVENT_BUS.unregister(listener);
 			this.listener = null;
 		}
@@ -99,13 +110,13 @@ public class BlazeRoomSolver extends AbstractToggleableFeature {
 				GlStateManager.enableAlpha();
 				switch (idx) {
 					case 0:
-						GlStateManager.color(1, 0.12f, 0.12f, 1);
+						BlazeRoomSolver.this.nextBlazeColour.applyGL();
 						break;
 					case 1:
-						GlStateManager.color(1, 0.41f, 0.12f, 1f);
+						BlazeRoomSolver.this.secondNextBlazeColour.applyGL();
 						break;
 					case 2:
-						GlStateManager.color(1, 0.73f, 0.12f, 1f);
+						BlazeRoomSolver.this.thirdNextBlazeColour.applyGL();
 						break;
 					default:
 						GlStateManager.color(1, 1, 1, 1f);
