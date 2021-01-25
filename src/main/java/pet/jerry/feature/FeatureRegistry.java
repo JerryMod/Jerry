@@ -36,6 +36,7 @@ public final class FeatureRegistry implements Registry<Feature> {
 
 		register(new BlazeRoomSolver());
 		register(new DungeonDeathsCounter());;
+		register(new BloodFullFeature());
 	}
 
 	@Override
