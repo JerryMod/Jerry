@@ -43,7 +43,7 @@ import java.util.UUID;
 public class Jerry {
 	public static final String MOD_ID = "jerry";
 	public static final String MOD_NAME = "Jerry";
-	public static final String VERSION = "0.1.0";
+	public static final String VERSION = "@VERSION@";
 
 	@Mod.Instance(MOD_ID)
 	public static Jerry INSTANCE;

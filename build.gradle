@@ -14,9 +14,15 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-version = mod_version
+version = acquireVersion()
 group = mod_group
 archivesBaseName = mod_id
+
+def acquireVersion() {
+    if (System.getenv().containsKey("PROJECT_VERSION"))
+        return System.getenv("PROJECT_VERSION")
+    return mod_version.toString() + "-dev"
+}
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
@@ -52,13 +58,20 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
 
-        expand 'mod_id': mod_id, 'mod_name': mod_name, 'version': project.version,
+        expand 'mod_id': mod_id, 'mod_name': mod_name, 'version': version,
                 'mcversion': project.minecraft.version, 'mod_description': mod_description
     }
+}
+import org.apache.tools.ant.filters.ReplaceTokens
 
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+task processSource(type: Sync) {
+    from sourceSets.main.java
+    into "$buildDir/src"
+    filter(ReplaceTokens, tokens: [VERSION: version])
+}
+
+compileJava {
+    source = processSource.outputs
 }
 
 jar {
@@ -79,6 +92,8 @@ jar {
 }
 
 shadowJar {
+    classifier = 'rel'
+
     exclude 'dummyThing'
     exclude 'module-info.class'
 
