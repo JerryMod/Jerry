@@ -31,16 +31,10 @@ public class ActionBarListener {
 
 				DefaultPlayingSkyBlockUser skyBlockUser = (DefaultPlayingSkyBlockUser) Jerry.INSTANCE.getSkyBlock().getPlayingUser();
 				if(trimmed.endsWith("❤")) {
-					if(Jerry.INSTANCE.getFeatureRegistry().isEnabled("health_display"))
-						actionBar = actionBar.replaceAll(trimmed, "");
 					parseAndSetHealth(coloursStripped.substring(0, coloursStripped.length() - 1), skyBlockUser);
 				} else if(trimmed.endsWith("❈")) {
-					if(Jerry.INSTANCE.getFeatureRegistry().isEnabled("defence_display"))
-						actionBar = actionBar.replaceAll(trimmed, "").replaceAll("Defense", "");
 					parseAndSetDefence(coloursStripped.substring(0, coloursStripped.length() - 1), skyBlockUser);
 				} else if(trimmed.endsWith("✎")) {
-					if(Jerry.INSTANCE.getFeatureRegistry().isEnabled("mana_display"))
-						actionBar = actionBar.replaceAll(trimmed, "").replaceAll("Mana", "");
 					parseAndSetMana(coloursStripped.substring(0, coloursStripped.length() - 1), skyBlockUser);
 				}
 
