@@ -8,6 +8,7 @@ import pet.jerry.feature.features.*;
 import pet.jerry.feature.features.bar.HealthBarFeature;
 import pet.jerry.feature.features.bar.ManaBarFeature;
 import pet.jerry.feature.features.dungeon.BlazeRoomSolver;
+import pet.jerry.feature.features.dungeon.BloodFullFeature;
 import pet.jerry.feature.features.dungeon.DisableBossMessages;
 import pet.jerry.feature.features.dungeon.DungeonDeathsCounter;
 import pet.jerry.feature.features.stat.*;
