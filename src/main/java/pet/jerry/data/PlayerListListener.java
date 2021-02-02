@@ -20,7 +20,7 @@ public class PlayerListListener {
 	@SubscribeEvent
 	void onSomething(TickEvent.ClientTickEvent event) {
 		boolean foundDungeon = false;
-		if(!(Jerry.INSTANCE.getSkyBlock() instanceof DefaultSkyBlock))
+		if(!(Jerry.INSTANCE.getSkyBlock() instanceof DefaultSkyBlock) || mc.getNetHandler() == null)
 			return;
 
 		DefaultSkyBlock skyBlock = ((DefaultSkyBlock) Jerry.INSTANCE.getSkyBlock());
