@@ -4,7 +4,9 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.MathHelper;
 import pet.jerry.data.base.SkyBlock;
+import pet.jerry.feature.category.FeatureCategory;
 import pet.jerry.hud.AbstractHUDElement;
+import pet.jerry.hud.group.DefaultRenderGroup;
 import pet.jerry.hud.position.Dimension;
 import pet.jerry.value.NamedColour;
 
@@ -23,8 +25,8 @@ public abstract class BarFeature extends AbstractHUDElement {
 	BarFeature(String name,
 	           Function<SkyBlock, Integer> currentValueSupplier,
 	           Function<SkyBlock, Integer> maxValueSupplier) {
-		super(name.toLowerCase(Locale.ROOT) + "_bar_display", name + " Bar Display");
-		this.getContainer().add(barColour);
+		super(name.toLowerCase(Locale.ROOT) + "_bar_display", name + " Bar Display", DefaultRenderGroup.get(), FeatureCategory.INFORMATION);
+		this.add(barColour);
 		this.currentValueSupplier = currentValueSupplier;
 		this.maxValueSupplier = maxValueSupplier;
 	}
@@ -34,7 +36,7 @@ public abstract class BarFeature extends AbstractHUDElement {
 	}
 
 	@Override
-	public void draw(float x, float y, SkyBlock skyBlock) {
+	public void draw(SkyBlock skyBlock) {
 		int currentValue = currentValueSupplier.apply(skyBlock);
 		int maxValue = maxValueSupplier.apply(skyBlock);
 		float ratio = MathHelper.clamp_float((currentValue / (float) maxValue), 0, 1);
@@ -47,13 +49,13 @@ public abstract class BarFeature extends AbstractHUDElement {
 		mc.getTextureManager().bindTexture(Gui.icons);
 		this.barColour.applyGL();
 		int texYCoord = 74;
-		mc.ingameGUI.drawTexturedModalRect(x, y, 0, texYCoord, WIDTH - 3, HEIGHT);
-		mc.ingameGUI.drawTexturedModalRect(x + (WIDTH - 3), y, 179, texYCoord, 3, HEIGHT);
+		mc.ingameGUI.drawTexturedModalRect(0, 0, 0, texYCoord, WIDTH - 3, HEIGHT);
+		mc.ingameGUI.drawTexturedModalRect((WIDTH - 3), 0, 179, texYCoord, 3, HEIGHT);
 		int totalWidth = Math.round(WIDTH * ratio);
 		int leftoverWidth = MathHelper.clamp_int(totalWidth - (WIDTH - 3), 0, 3);
-		mc.ingameGUI.drawTexturedModalRect(x, y, 0, texYCoord + 5, MathHelper.clamp_int(totalWidth, 0, WIDTH - 3), HEIGHT);
+		mc.ingameGUI.drawTexturedModalRect(0, 0, 0, texYCoord + 5, MathHelper.clamp_int(totalWidth, 0, WIDTH - 3), HEIGHT);
 		if(leftoverWidth > 0) {
-			mc.ingameGUI.drawTexturedModalRect(x + (WIDTH - 3), y, 179, texYCoord + 5, leftoverWidth, HEIGHT);
+			mc.ingameGUI.drawTexturedModalRect((WIDTH - 3), 0, 179, texYCoord + 5, leftoverWidth, HEIGHT);
 		}
 		GlStateManager.popMatrix();
 	}

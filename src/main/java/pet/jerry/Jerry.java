@@ -54,7 +54,7 @@ public class Jerry {
 
 	private final List<Object> skyBlockListeners = Collections.unmodifiableList(Arrays.asList(
 			new ActionBarListener(),
-			new HUDRenderListener(),
+			//new HUDRenderListener(),
 			new PlayerListListener()
 	));
 
@@ -73,6 +73,7 @@ public class Jerry {
 		MinecraftForge.EVENT_BUS.register(featureRegistry);
 		MinecraftForge.EVENT_BUS.register(new ScoreboardListener());
 		MinecraftForge.EVENT_BUS.register(new KeyBindingListener());
+		MinecraftForge.EVENT_BUS.register(new HUDRenderListener());
 
 		if (System.getenv().containsKey("MINECRAFT_USERNAME")
 				&& System.getenv().containsKey("MINECRAFT_PASSWORD")) {

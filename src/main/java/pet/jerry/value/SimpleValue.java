@@ -1,6 +1,8 @@
 package pet.jerry.value;
 
 import pet.jerry.value.constraint.Constraint;
+import pet.jerry.value.storage.BasicValueStorage;
+import pet.jerry.value.storage.ValueStorage;
 
 import java.util.*;
 
@@ -8,13 +10,18 @@ public class SimpleValue<T> implements Value<T> {
 	private final String name;
 	private final String id;
 	private final Set<Constraint<T>> constraints = new HashSet<>();
-	private T value;
+	private final ValueStorage<T> valueStorage;
 
 	@SafeVarargs
 	public SimpleValue(String name, String id, T value, Constraint<T>... constraints) {
+		this(name, id, new BasicValueStorage<>(value), constraints);
+	}
+
+	@SafeVarargs
+	public SimpleValue(String name, String id, ValueStorage<T> storage, Constraint<T>... constraints) {
 		this.name = name;
 		this.id = id;
-		this.value = value;
+		this.valueStorage = storage;
 		this.constraints.addAll(Arrays.asList(constraints));
 	}
 
@@ -30,18 +37,19 @@ public class SimpleValue<T> implements Value<T> {
 
 	@Override
 	public T getValue() {
-		return value;
+		return valueStorage.get();
 	}
 
 	@Override
 	public void setValue(T value) {
 		for (Constraint<T> constraint : constraints) {
-			if(!constraint.validate(value))
-				throw new IllegalArgumentException(
-						String.format("Constraint validation failed for property \"%s\" (%s)", this.name,
-								constraint.getClass().getCanonicalName()));
+			if(!constraint.validate(value)) {
+				System.err.printf("Constraint validation failed for property \"%s\" (%s)%n", this.name,
+						constraint.getClass().getCanonicalName());
+				return;
+			}
 		}
-		this.value = value;
+		this.valueStorage.set(value);
 	}
 
 	@Override

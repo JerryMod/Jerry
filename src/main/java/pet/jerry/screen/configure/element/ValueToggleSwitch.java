@@ -1,4 +1,4 @@
-package pet.jerry.screen.configure;
+package pet.jerry.screen.configure.element;
 
 import pet.jerry.screen.ToggleSwitchElement;
 import pet.jerry.value.Value;

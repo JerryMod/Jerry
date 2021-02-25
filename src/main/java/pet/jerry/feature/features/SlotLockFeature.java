@@ -11,11 +11,12 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 import pet.jerry.Jerry;
-import pet.jerry.annotation.FeatureInfo;
+import pet.jerry.feature.annotation.FeatureInfo;
 import pet.jerry.event.InventorySlotClickEvent;
 import pet.jerry.event.InventorySlotDrawEvent;
 import pet.jerry.event.ItemDropEvent;
 import pet.jerry.feature.AbstractToggleableFeature;
+import pet.jerry.value.EnumValue;
 import pet.jerry.value.NamedColour;
 import pet.jerry.value.BooleanValue;
 import pet.jerry.value.SimpleValue;
@@ -31,15 +32,15 @@ public class SlotLockFeature extends AbstractToggleableFeature {
 			= new SimpleValue<>("Locked Slots", "locked_slots", new HashSet<>());
 	private final BooleanValue allowUlt
 			= new BooleanValue("Allow Ult in Dungeons", "allow_ult", true);
-	private final SimpleValue<Style> style
-			= new SimpleValue<>("Style", "style", Style.LOCK);
+	private final EnumValue<Style> style
+			= new EnumValue<>("Style", "style", Style.LOCK);
 	private final NamedColour lockedSlotColour
 			= new NamedColour("Locked Slot Colour", "locked_slot_colour", true);
 	private final KeyBinding slotLockKeybind
 			= new KeyBinding("key.jerry.lockslot", Keyboard.KEY_L, "key.category.jerry");
 
 	public SlotLockFeature() {
-		this.getContainer().add(lockedSlots, allowUlt, style, lockedSlotColour);
+		this.add(lockedSlots, allowUlt, style, lockedSlotColour);
 		this.lockedSlotColour.setColour(0x40ff0000);
 		ClientRegistry.registerKeyBinding(slotLockKeybind);
 	}

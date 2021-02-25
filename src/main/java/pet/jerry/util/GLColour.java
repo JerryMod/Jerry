@@ -1,5 +1,6 @@
 package pet.jerry.util;
 
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -30,5 +31,12 @@ public class GLColour {
 
 	public void apply() {
 		GL11.glColor4f(red, green, blue, alpha);
+	}
+
+	public static void applyHex(int col) {
+		GlStateManager.color(((col >> 16) & 0xFF) / 255f,
+				((col >> 8) & 0xFF) / 255f,
+				(col & 0xFF) / 255f,
+				((col >> 24) & 0xFF) / 255f);
 	}
 }

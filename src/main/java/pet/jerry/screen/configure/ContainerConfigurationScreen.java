@@ -3,24 +3,29 @@ package pet.jerry.screen.configure;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
-import pet.jerry.feature.AbstractFeature;
+import pet.jerry.Jerry;
+import pet.jerry.value.SaveableContainer;
 
 import java.io.IOException;
 
-public class FeatureConfigurationScreen extends GuiScreen {
-	private final AbstractFeature feature;
+public class ContainerConfigurationScreen extends GuiScreen {
+	private final SaveableContainer container;
 	private final GuiScreen parent;
-	private FeatureConfigurationList configurationList;
+	private ContainerConfigurationList configurationList;
 
-	public FeatureConfigurationScreen(GuiScreen parent, AbstractFeature feature) {
+	public ContainerConfigurationScreen() {
+		this(null, Jerry.INSTANCE.getConfigRegistry().getRoot());
+	}
+
+	public ContainerConfigurationScreen(GuiScreen parent, SaveableContainer container) {
 		this.parent = parent;
-		this.feature = feature;
+		this.container = container;
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
-		this.configurationList = new FeatureConfigurationList(this, feature);
+		this.configurationList = new ContainerConfigurationList(this, container);
 		this.buttonList.add(new GuiButton(66, (this.width / 2) - 100, this.height - 22, "Back"));
 	}
 
@@ -28,7 +33,7 @@ public class FeatureConfigurationScreen extends GuiScreen {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.drawDefaultBackground();
 		this.configurationList.drawScreen(mouseX, mouseY, partialTicks);
-		this.drawCenteredString(mc.fontRendererObj, feature.getName(), this.width / 2, 10, 0xffffff);
+		this.drawCenteredString(mc.fontRendererObj, container.getName(), this.width / 2, 10, 0xffffff);
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 
@@ -36,6 +41,12 @@ public class FeatureConfigurationScreen extends GuiScreen {
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		this.configurationList.mouseClicked(mouseX, mouseY, mouseButton);
 		super.mouseClicked(mouseX, mouseY, mouseButton);
+	}
+
+	@Override
+	protected void mouseReleased(int mouseX, int mouseY, int state) {
+		this.configurationList.mouseReleased(mouseX, mouseY, state);
+		super.mouseReleased(mouseX, mouseY, state);
 	}
 
 	@Override

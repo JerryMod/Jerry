@@ -7,7 +7,7 @@ import pet.jerry.hud.position.Dimension;
 import pet.jerry.hud.position.Position;
 
 public interface HUDElement extends Named {
-	void draw(float x, float y, SkyBlock skyBlock);
+	void draw(SkyBlock skyBlock);
 	Dimension getDimension(SkyBlock skyBlock);
 	Position getPosition();
 }

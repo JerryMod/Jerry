@@ -27,7 +27,7 @@ public abstract class StatDisplayFeature extends TextHUDElement {
 		this.symbol = symbol;
 		this.getTextColour().setColour(colour);
 		if(!symbol.isEmpty())
-			this.getContainer().add(showSymbol);
+			this.add(showSymbol);
 	}
 
 	@Override

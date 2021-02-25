@@ -1,4 +1,4 @@
-package pet.jerry.screen.configure;
+package pet.jerry.screen.configure.element;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import pet.jerry.feature.AbstractFeature;
+import pet.jerry.screen.configure.ContainerConfigurationScreen;
 
 public class FeatureConfigureButton extends GuiButton {
 	private static final ResourceLocation GEAR_IMG = new ResourceLocation("jerry:gui/gear.png");
@@ -35,7 +36,7 @@ public class FeatureConfigureButton extends GuiButton {
 	public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
 		if(super.mousePressed(mc, mouseX, mouseY)) {
 			this.playPressSound(mc.getSoundHandler());
-			mc.displayGuiScreen(new FeatureConfigurationScreen(parent, feature));
+			mc.displayGuiScreen(new ContainerConfigurationScreen(parent, feature));
 			return true;
 		}
 		return false;

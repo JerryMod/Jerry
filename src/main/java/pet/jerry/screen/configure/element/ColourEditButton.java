@@ -1,8 +1,9 @@
-package pet.jerry.screen.configure;
+package pet.jerry.screen.configure.element;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import pet.jerry.screen.configure.ColourEditScreen;
 import pet.jerry.value.NamedColour;
 
 public class ColourEditButton extends GuiButton {

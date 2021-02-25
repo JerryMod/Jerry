@@ -5,15 +5,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import pet.jerry.Jerry;
-import pet.jerry.annotation.FeatureInfo;
+import pet.jerry.feature.annotation.FeatureInfo;
+import pet.jerry.feature.category.FeatureCategory;
 import pet.jerry.hud.TextHUDElement;
 import pet.jerry.hud.icon.IconLocation;
 import pet.jerry.hud.icon.ImageIcon;
 
 import java.util.Collections;
 
-@FeatureInfo(id = "defence_display", name = "Defence Display")
+@FeatureInfo(id = "defence_display", name = "Defence Display", category = FeatureCategory.INFORMATION)
 public class DefenceDisplayFeature extends TextHUDElement {
 	public DefenceDisplayFeature() {
 		super((skyBlock) -> Collections.singletonList(skyBlock.getPlayingUser().getDefence() + ""));
@@ -26,7 +26,7 @@ public class DefenceDisplayFeature extends TextHUDElement {
 		if(event.type == 2 && this.isEnabled()) {
 			event.message = new ChatComponentText(
 					event.message.getFormattedText()
-							.replaceAll("\247.\\d+❈ Defense", "")
+							.replaceAll("\247.\\d+.*Defense", "")
 							.trim());
 		}
 	}

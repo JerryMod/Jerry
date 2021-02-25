@@ -1,14 +1,11 @@
 package pet.jerry.value;
 
-import net.minecraft.client.renderer.GlStateManager;
 import pet.jerry.core.Named;
-import pet.jerry.value.BooleanValue;
-import pet.jerry.value.IntegerValue;
-import pet.jerry.value.SaveableContainer;
+import pet.jerry.util.ChromaUtil;
+import pet.jerry.util.GLColour;
+import pet.jerry.value.number.IntegerValue;
 
-import java.awt.*;
-
-public class NamedColour extends SaveableContainer implements Named {
+public class NamedColour extends DefaultSaveableContainer implements Named {
 	private final BooleanValue chroma = new BooleanValue("Chroma", "chroma", false);
 	private final IntegerValue actualColour = new IntegerValue("Colour", "colour", 0xFFFFFF);
 	private final boolean allowAlpha;
@@ -26,9 +23,9 @@ public class NamedColour extends SaveableContainer implements Named {
 
 	public int toHex() {
 		if (chroma.getValue()) {
-			return 0;
+			return ChromaUtil.getChromaColour();
 		}
-		if(!allowAlpha)
+		if (!allowAlpha)
 			return this.toHex(255);
 		return actualColour.getValue();
 	}
@@ -54,21 +51,22 @@ public class NamedColour extends SaveableContainer implements Named {
 	}
 
 	public void applyGL() {
-		this.applyIntAsGLColours(this.actualColour.getValue());
+		GLColour.applyHex(this.actualColour.getValue());
 	}
 
 	public void applyDarkerGL() {
-		this.applyIntAsGLColours(this.darker());
+		GLColour.applyHex(this.darker());
 	}
 
 	public int darker() {
 		return (actualColour.getValue() & 16579836) >> 2 | actualColour.getValue() & -16777216;
 	}
 
-	private void applyIntAsGLColours(int col) {
-		GlStateManager.color(((col >> 16) & 0xFF) / 255f,
-				((col >> 8) & 0xFF) / 255f,
-				(col & 0xFF) / 255f,
-				this.allowAlpha ? ((col >> 24) & 0xFF) / 255f : 1f);
+	public BooleanValue getChroma() {
+		return chroma;
+	}
+
+	public int getActualColour() {
+		return actualColour.getValue();
 	}
 }

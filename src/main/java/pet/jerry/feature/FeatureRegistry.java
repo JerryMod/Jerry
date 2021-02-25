@@ -7,10 +7,7 @@ import pet.jerry.event.SkyBlockConnectionEvent;
 import pet.jerry.feature.features.*;
 import pet.jerry.feature.features.bar.HealthBarFeature;
 import pet.jerry.feature.features.bar.ManaBarFeature;
-import pet.jerry.feature.features.dungeon.BlazeRoomSolver;
-import pet.jerry.feature.features.dungeon.BloodFullFeature;
-import pet.jerry.feature.features.dungeon.DisableBossMessages;
-import pet.jerry.feature.features.dungeon.DungeonDeathsCounter;
+import pet.jerry.feature.features.dungeon.*;
 import pet.jerry.feature.features.stat.*;
 
 import java.util.*;
@@ -36,7 +33,9 @@ public final class FeatureRegistry implements Registry<Feature> {
 		register(new StrengthDisplayFeature());
 
 		register(new BlazeRoomSolver());
-		register(new DungeonDeathsCounter());;
+		register(new DungeonMapDisplayFeature());
+		register(new DungeonDeathsCounter());
+		register(new DungeonSecretsDisplayFeature());
 		register(new BloodFullFeature());
 	}
 

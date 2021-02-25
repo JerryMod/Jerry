@@ -3,7 +3,7 @@ package pet.jerry.feature.features;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import pet.jerry.annotation.FeatureInfo;
+import pet.jerry.feature.annotation.FeatureInfo;
 import pet.jerry.feature.AbstractToggleableFeature;
 import pet.jerry.item.ItemUtils;
 

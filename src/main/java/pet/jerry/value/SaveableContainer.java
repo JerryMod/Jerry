@@ -1,37 +1,7 @@
 package pet.jerry.value;
 
-import java.util.*;
+import java.util.List;
 
-public class SaveableContainer implements Saveable<Set<Saveable<?>>> {
-	private final Set<Saveable<?>> contents = new HashSet<>();
-	private final String name;
-	private final String id;
-
-	public SaveableContainer(String name, String id) {
-		this.name = name;
-		this.id = id;
-	}
-
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public String getID() {
-		return id;
-	}
-
-	@Override
-	public Set<Saveable<?>> getValue() {
-		return contents;
-	}
-
-	public void add(Saveable<?>... saveables) {
-		this.contents.addAll(Arrays.asList(saveables));
-	}
-
-	public void add(Collection<Saveable<?>> saveables) {
-		this.contents.addAll(saveables);
-	}
+public interface SaveableContainer extends Saveable<List<Saveable<?>>> {
+	void add(Saveable<?> saveable);
 }

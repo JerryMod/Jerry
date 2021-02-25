@@ -4,13 +4,14 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import pet.jerry.annotation.FeatureInfo;
+import pet.jerry.feature.annotation.FeatureInfo;
+import pet.jerry.feature.category.FeatureCategory;
 import pet.jerry.hud.position.Position;
 import pet.jerry.hud.TextHUDElement;
 
 import java.util.Collections;
 
-@FeatureInfo(id = "mana_display", name = "Mana Display")
+@FeatureInfo(id = "mana_display", name = "Mana Display", category = FeatureCategory.INFORMATION)
 public class ManaDisplayFeature extends TextHUDElement {
 	public ManaDisplayFeature() {
 		super((skyBlock) -> Collections.singletonList(

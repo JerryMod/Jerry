@@ -17,7 +17,7 @@ import pet.jerry.feature.AbstractFeature;
 import pet.jerry.feature.Feature;
 import pet.jerry.hud.position.Dimension;
 import pet.jerry.hud.position.Position;
-import pet.jerry.screen.configure.FeatureConfigurationScreen;
+import pet.jerry.screen.configure.ContainerConfigurationScreen;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class HUDEditScreen extends GuiScreen {
 	private HUDElement hoveredElement;
 	private float prevMouseX, prevMouseY;
 	private boolean isDragging;
-	private GuiScreen parent;
+	private final GuiScreen parent;
 
 	public HUDEditScreen() {
 		this(null);
@@ -63,10 +63,26 @@ public class HUDEditScreen extends GuiScreen {
 			}
 
 			GlStateManager.pushMatrix();
-			drawRectFloats(pos.getX(), pos.getY(), pos.getX() + dimension.getWidth(), pos.getY() + dimension.getHeight(),
+			GlStateManager.translate(pos.getX(), pos.getY(), 0);
+			GlStateManager.enableBlend();
+			GlStateManager.enableAlpha();
+			drawRectFloats(0, 0, dimension.getWidth(), dimension.getHeight(),
 					hovered ? 0xCC00FF00 : 0xCCAAAAAA);
+
+			int x = Math.round(pos.getX());
+			int y = Math.round(pos.getY());
+
+			int w = Math.round(dimension.getWidth());
+			int h = Math.round(dimension.getHeight());
+
+			ScaledResolution resolution = new ScaledResolution(mc);
+			int scale = resolution.getScaleFactor();
+			GL11.glScissor(x * scale, mc.displayHeight - y * scale - h * scale, Math.max(0, w * scale), Math.max(0, h * scale));
+			GL11.glEnable(GL11.GL_SCISSOR_TEST);
+			element.draw(mockSkyBlock);
+			GL11.glDisable(GL11.GL_SCISSOR_TEST);
+			GlStateManager.disableBlend();
 			GlStateManager.popMatrix();
-			element.draw(pos.getX(), pos.getY(), mockSkyBlock);
 		}
 
 		if(!anyHovered && !isDragging)
@@ -90,7 +106,9 @@ public class HUDEditScreen extends GuiScreen {
 		if(hoveredElement != null) {
 			if ((Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
 				if(hoveredElement instanceof AbstractFeature) {
-					mc.displayGuiScreen(new FeatureConfigurationScreen(this, (AbstractFeature) hoveredElement));
+					mc.displayGuiScreen(new ContainerConfigurationScreen(this, (AbstractFeature) hoveredElement));
+					isDragging = false;
+					hoveredElement = null;
 				}
 			} else {
 				Position position = hoveredElement.getPosition().toAbsolute(hoveredElement.getDimension(mockSkyBlock));

@@ -1,16 +1,13 @@
 package pet.jerry.screen;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiListExtended;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.Tessellator;
 import pet.jerry.Jerry;
 import pet.jerry.feature.AbstractFeature;
 import pet.jerry.feature.AbstractToggleableFeature;
 import pet.jerry.feature.Feature;
-import pet.jerry.screen.configure.FeatureConfigureButton;
+import pet.jerry.screen.configure.element.FeatureConfigureButton;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -76,6 +73,14 @@ public class FeaturesList extends GuiListExtended {
 	}
 
 	@Override
+	protected void drawSlot(int slotIndex, int x, int y, int slotHeight, int mouseXIn, int mouseYIn) {
+		int yOffset = 2;
+		if(slotIndex % 2 == 0)
+			Gui.drawRect(x, y - yOffset, x + this.getListWidth(), y + slotHeight + yOffset, 0x22ffffff);
+		super.drawSlot(slotIndex, x, y, slotHeight, mouseXIn, mouseYIn);
+	}
+
+	@Override
 	public boolean mouseClicked(int mouseX, int mouseY, int mouseEvent) {
 		this.searchField.mouseClicked(mouseX, mouseY, mouseEvent);
 		return super.mouseClicked(mouseX, mouseY, mouseEvent);
@@ -93,7 +98,7 @@ public class FeaturesList extends GuiListExtended {
 					this.children.add(new FeatureToggleSwitchElement(0, (AbstractToggleableFeature) feature));
 					min = 1;
 				}
-				if (((AbstractFeature) feature).getContainer().getValue().size() > min) {
+				if (feature.getValue().size() > min) {
 					this.children.add(new FeatureConfigureButton(1, (AbstractFeature) feature, FeaturesList.this.owner));
 				}
 			}
@@ -102,7 +107,8 @@ public class FeaturesList extends GuiListExtended {
 
 		@Override
 		public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
-			mc.fontRendererObj.drawStringWithShadow(feature.getName(), x + 30, y + 8, 0xffffff);
+			int yOffset = (slotHeight / 2) - (mc.fontRendererObj.FONT_HEIGHT / 2);
+			mc.fontRendererObj.drawStringWithShadow(feature.getName(), x + 30, y + yOffset, 0xffffff);
 			int buttonX = FeaturesList.this.getScrollBarX();
 			for (GuiButton button : children) {
 				button.xPosition = (buttonX -= (button.width + 4));

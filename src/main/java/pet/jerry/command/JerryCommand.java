@@ -5,10 +5,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
-import pet.jerry.command.subcommands.JerryAboutSubCommand;
-import pet.jerry.command.subcommands.JerryLoadSubCommand;
-import pet.jerry.command.subcommands.JerrySaveSubCommand;
-import pet.jerry.command.subcommands.JerryToggleSubCommand;
+import pet.jerry.command.subcommands.*;
 import pet.jerry.util.Utils;
 
 import java.util.*;

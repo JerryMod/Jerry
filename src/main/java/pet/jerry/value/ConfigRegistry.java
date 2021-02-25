@@ -1,21 +1,22 @@
 package pet.jerry.value;
 
-import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import pet.jerry.feature.category.FeatureCategory;
 import pet.jerry.value.serialiser.ColorDeserializer;
 import pet.jerry.value.serialiser.ColorSerializer;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Map;
 
 public final class ConfigRegistry {
-	private final Set<SaveableContainer> root = new HashSet<>();
+	private final DefaultSaveableContainer root = new DefaultSaveableContainer("Jerry", "jerry");
 	private final File configDirectory;
 	private final File configFile;
 	private final ObjectMapper om = new ObjectMapper();
@@ -28,6 +29,8 @@ public final class ConfigRegistry {
 						.addDeserializer(Color.class, new ColorDeserializer())
 						.addSerializer(Color.class, new ColorSerializer())
 		);
+		root.add(GlobalSettingsContainer.get());
+		root.add(Arrays.asList(FeatureCategory.values()));
 	}
 
 	public void register(SaveableContainer container) {
@@ -36,14 +39,12 @@ public final class ConfigRegistry {
 
 	public void save() throws IOException {
 		ObjectNode rootNode = om.createObjectNode();
-		for (SaveableContainer container : root) {
-			save(container, rootNode);
-		}
+		this.save(root, rootNode);
 
-		if(!configDirectory.exists())
+		if (!configDirectory.exists())
 			configDirectory.mkdirs();
 
-		if(!configFile.exists())
+		if (!configFile.exists())
 			configFile.createNewFile();
 
 		om.writerWithDefaultPrettyPrinter().writeValue(configFile, rootNode);
@@ -52,7 +53,7 @@ public final class ConfigRegistry {
 	private void save(SaveableContainer container, ObjectNode parentNode) {
 		ObjectNode containerNode = parentNode.putObject(container.getID());
 		for (Saveable<?> saveable : container.getValue()) {
-			if(saveable instanceof SaveableContainer) {
+			if (saveable instanceof SaveableContainer) {
 				save((SaveableContainer) saveable, containerNode);
 			} else {
 				try {
@@ -65,29 +66,18 @@ public final class ConfigRegistry {
 	}
 
 	public void load() throws IOException {
-		if(!configFile.exists())
+		if (!configFile.exists())
 			save();
 
 		JsonNode tree = om.readTree(configFile);
-		if(tree.isObject()) {
+		if (tree.isObject()) {
 			ObjectNode rootNode = (ObjectNode) tree;
 			for (Iterator<Map.Entry<String, JsonNode>> it = rootNode.fields(); it.hasNext(); ) {
 				Map.Entry<String, JsonNode> entry = it.next();
 				String key = entry.getKey();
-				JsonNode node = entry.getValue();
 
-				if(!node.isObject())
-					continue;
-
-				SaveableContainer thisContainer = null;
-				for (SaveableContainer container : root) {
-					if(container.getID().equalsIgnoreCase(key)) {
-						thisContainer = container;
-						break;
-					}
-				}
-				if(null != thisContainer) {
-					loadContainer(thisContainer, (ObjectNode) node);
+				if (key.equalsIgnoreCase(root.getID())) {
+					this.loadSaveable(root, entry.getValue());
 				}
 			}
 		} else {
@@ -95,24 +85,28 @@ public final class ConfigRegistry {
 		}
 	}
 
-	private void loadContainer(SaveableContainer container, ObjectNode node) throws IOException {
-		for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext(); ) {
-			Map.Entry<String, JsonNode> entry = it.next();
-
-			for (Saveable<?> saveable : container.getValue()) {
-				if(saveable.getID().equalsIgnoreCase(entry.getKey())) {
-					if(saveable instanceof SaveableContainer) {
-						if(!entry.getValue().isObject())
-							continue;
-						loadContainer((SaveableContainer) saveable, (ObjectNode) entry.getValue());
-					} else {
-						if(saveable instanceof Value<?>) {
-							Value<Object> value = ((Value<Object>) saveable);
-							value.setValue(om.treeToValue(entry.getValue(), value.getValue().getClass()));
-						}
+	private void loadSaveable(Saveable<?> saveable, JsonNode node) throws IOException {
+		if (saveable instanceof SaveableContainer && node.isObject()) {
+			SaveableContainer container = (SaveableContainer) saveable;
+			for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext(); ) {
+				Map.Entry<String, JsonNode> entry = it.next();
+				for (Saveable<?> child : container.getValue()) {
+					if (child.getID().equalsIgnoreCase(entry.getKey())) {
+						this.loadSaveable(child, entry.getValue());
 					}
 				}
 			}
+		} else if (saveable instanceof Value<?>) {
+			Value<Object> value = ((Value<Object>) saveable);
+			Class<?> clazz = value.getValue().getClass();
+			while (clazz.isAnonymousClass()) {
+				clazz = clazz.getSuperclass();
+			}
+			value.setValue(om.treeToValue(node, clazz));
 		}
+	}
+
+	public SaveableContainer getRoot() {
+		return root;
 	}
 }

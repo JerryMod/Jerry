@@ -4,6 +4,7 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.client.config.GuiSlider;
 import org.lwjgl.input.Keyboard;
+import pet.jerry.screen.configure.element.ValueToggleSwitch;
 import pet.jerry.value.NamedColour;
 
 import java.awt.*;
@@ -16,10 +17,11 @@ public class ColourEditScreen extends GuiScreen {
 	private Color colorObj;
 	private GuiSlider hue, saturation, brightness, alpha;
 	private ColourTextField colourTextField;
+	private ValueToggleSwitch chromaToggleSwitch;
 
 	public ColourEditScreen(NamedColour colour, GuiScreen parent) {
 		this.colour = colour;
-		this.colorObj = new Color(colour.toHex());
+		this.colorObj = new Color(colour.getActualColour(), colour.isAlphaAllowed());
 		this.parent = parent;
 	}
 
@@ -32,6 +34,7 @@ public class ColourEditScreen extends GuiScreen {
 
 		float[] hsb = new float[3];
 		Color.RGBtoHSB(colorObj.getRed(), colorObj.getGreen(), colorObj.getBlue(), hsb);
+
 		this.buttonList.add(hue = new GuiSlider(0,
 				x, y, w, h, "Hue: ", "%", 0, 100, hsb[0] * 100, false, true));
 		this.buttonList.add(saturation = new GuiSlider(1,
@@ -40,18 +43,26 @@ public class ColourEditScreen extends GuiScreen {
 				x, y += 25, w, h, "Brightness: ", "%", 0, 100, hsb[2] * 100, false, true));
 		this.buttonList.add(alpha = new GuiSlider(3,
 				x, y += 25, w, h, "Alpha: ", "%", 0, 100, (colorObj.getAlpha() / 255f) * 100, false, true));
+
+		this.chromaToggleSwitch = new ValueToggleSwitch(4, this.colour.getChroma());
+		mc.fontRendererObj.drawStringWithShadow("Chroma", x, y, 0xffffff);
+		chromaToggleSwitch.xPosition = x + (100 - chromaToggleSwitch.width);
+		chromaToggleSwitch.yPosition = y += 25;
+		this.buttonList.add(chromaToggleSwitch);
 		this.buttonList.add(new GuiButton(66, (this.width / 2) - 100, this.height - 22, "Back"));
 		this.colourTextField = new ColourTextField(4, mc.fontRendererObj, x, y += 25, w, h);
 		this.colourTextField.setText(Integer.toHexString(this.colorObj.getRGB()));
+	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		hue.enabled = saturation.enabled = brightness.enabled = alpha.enabled = !this.colour.getChroma().getValue();
 
 		if(!colour.isAlphaAllowed()) {
 			alpha.setValue(100);
 			alpha.enabled = false;
 		}
-	}
 
-	@Override
-	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		this.drawDefaultBackground();
 		this.drawColourPreview();
 		this.colourTextField.drawTextBox();

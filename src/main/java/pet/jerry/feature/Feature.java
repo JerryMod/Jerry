@@ -1,6 +1,6 @@
 package pet.jerry.feature;
 
-import pet.jerry.core.Named;
+import pet.jerry.value.SaveableContainer;
 
-public interface Feature extends Named {
+public interface Feature extends SaveableContainer {
 }

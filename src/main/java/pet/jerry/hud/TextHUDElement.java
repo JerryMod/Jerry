@@ -1,5 +1,6 @@
 package pet.jerry.hud;
 
+import net.minecraft.client.renderer.GlStateManager;
 import pet.jerry.data.base.SkyBlock;
 import pet.jerry.hud.group.DefaultRenderGroup;
 import pet.jerry.hud.group.RenderGroup;
@@ -7,6 +8,7 @@ import pet.jerry.hud.icon.Icon;
 import pet.jerry.hud.icon.IconLocation;
 import pet.jerry.hud.position.Dimension;
 import pet.jerry.hud.position.Position;
+import pet.jerry.value.GlobalSettingsContainer;
 import pet.jerry.value.NamedColour;
 
 import java.util.List;
@@ -20,7 +22,7 @@ public class TextHUDElement extends AbstractHUDElement {
 	public TextHUDElement(Function<SkyBlock, List<String>> supplier, Position position, RenderGroup group) {
 		super(position, group);
 		this.supplier = supplier;
-		this.getContainer().add(textColour);
+		this.add(textColour);
 	}
 
 	public TextHUDElement(Function<SkyBlock, List<String>> supplier, Position position) {
@@ -48,9 +50,11 @@ public class TextHUDElement extends AbstractHUDElement {
 	}
 
 	@Override
-	public void draw(float x, float y, SkyBlock skyBlock) {
+	public void draw(SkyBlock skyBlock) {
+		GlStateManager.enableTexture2D();
+		float x = 0;
 		if (icon != null && icon.getIconLocation().equals(IconLocation.BEFORE)) {
-			this.renderIcon(x + 1, y + 1);
+			this.renderIcon(1, 1);
 			x += icon.getDimension().getWidth() + 2;
 		}
 		int maxWidth = -1;
@@ -61,11 +65,11 @@ public class TextHUDElement extends AbstractHUDElement {
 			if(width > maxWidth)
 				maxWidth = width;
 			this.drawString(s, x + 2,
-					(y + i * (mc.fontRendererObj.FONT_HEIGHT + 2)) + 2, textColour.toHex());
+					(i * (mc.fontRendererObj.FONT_HEIGHT + 2)) + 2, textColour.toHex());
 		}
 
 		if(icon != null && icon.getIconLocation().equals(IconLocation.AFTER)) {
-			this.renderIcon(x + maxWidth + 2, y + 1);
+			this.renderIcon(x + maxWidth + 2, 1);
 		}
 	}
 
@@ -90,9 +94,9 @@ public class TextHUDElement extends AbstractHUDElement {
 	}
 
 	private void renderIcon(float x, float y) {
-		if(this.getStringRenderingMethod().equals(StringRenderingMethod.SHADOW)) {
+		if(GlobalSettingsContainer.get().getStringRenderMethod().equals(StringRenderingMethod.SHADOW)) {
 			this.renderIconShadow(x, y, this.textColour);
-		} else if(this.getStringRenderingMethod().equals(StringRenderingMethod.OUTLINE)) {
+		} else if(GlobalSettingsContainer.get().getStringRenderMethod().equals(StringRenderingMethod.OUTLINE)) {
 			this.renderIconOutline(x, y, this.textColour);
 		}
 	}

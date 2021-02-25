@@ -8,19 +8,20 @@ import net.minecraft.util.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import pet.jerry.Jerry;
-import pet.jerry.annotation.FeatureInfo;
+import pet.jerry.feature.annotation.FeatureInfo;
 import pet.jerry.event.BlazeModelRenderEvent;
 import pet.jerry.event.DungeonConnectionEvent;
 import pet.jerry.event.SkyBlockConnectionEvent;
 import pet.jerry.event.TileEntityPositionSetEvent;
 import pet.jerry.feature.AbstractToggleableFeature;
+import pet.jerry.feature.category.FeatureCategory;
 import pet.jerry.value.NamedColour;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@FeatureInfo(id = "blaze_solver", name = "Blaze Room Solver")
+@FeatureInfo(id = "blaze_solver", name = "Blaze Room Solver", category = FeatureCategory.DUNGEON)
 public class BlazeRoomSolver extends AbstractToggleableFeature {
 	private final NamedColour nextBlazeColour = new NamedColour("Next Blaze Colour", "next_blaze");
 	private final NamedColour secondNextBlazeColour = new NamedColour("Second Next Blaze Colour", "second_next_blaze");
@@ -29,11 +30,11 @@ public class BlazeRoomSolver extends AbstractToggleableFeature {
 	private BlazeRenderListener listener;
 
 	public BlazeRoomSolver() {
-		this.nextBlazeColour.setColour(0xFF1E20);
-		this.secondNextBlazeColour.setColour(0xFF6920);
-		this.thirdNextBlazeColour.setColour(0xFFBB20);
+		this.nextBlazeColour.setColour(0xFFFF1E20);
+		this.secondNextBlazeColour.setColour(0xFFFF6920);
+		this.thirdNextBlazeColour.setColour(0xFFFFBB20);
 
-		this.getContainer().add(nextBlazeColour, secondNextBlazeColour, thirdNextBlazeColour);
+		this.add(nextBlazeColour, secondNextBlazeColour, thirdNextBlazeColour);
 	}
 
 	@SubscribeEvent

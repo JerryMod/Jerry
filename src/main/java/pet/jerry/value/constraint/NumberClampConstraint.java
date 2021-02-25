@@ -1,18 +1,26 @@
 package pet.jerry.value.constraint;
 
-public class NumberClampConstraint implements Constraint<Number> {
-	private final Number lowerBound;
-	private final Number upperBound;
+public class NumberClampConstraint<T extends Number> implements Constraint<T> {
+	private final T lowerBound;
+	private final T upperBound;
 
-	public NumberClampConstraint(Number lowerBound, Number upperBound) {
+	public NumberClampConstraint(T lowerBound, T upperBound) {
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
 	}
 
 	@Override
 	public boolean validate(Number value) {
-		return value.doubleValue() <= upperBound.doubleValue()
-				&& value.doubleValue() >= lowerBound.doubleValue();
+		return value.doubleValue() < upperBound.doubleValue()
+				&& value.doubleValue() > lowerBound.doubleValue();
+	}
+
+	public T getUpperBound() {
+		return upperBound;
+	}
+
+	public T getLowerBound() {
+		return lowerBound;
 	}
 
 	public static class Builder {

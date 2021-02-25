@@ -12,6 +12,10 @@ public class ImageIcon implements Icon {
 	private final int renderSize;
 	private final IconLocation location;
 
+	public ImageIcon(ResourceLocation iconImage) {
+		this(iconImage, 32, 8);
+	}
+
 	public ImageIcon(ResourceLocation iconImage, int imgSize, int renderSize) {
 		this(iconImage, imgSize, renderSize, IconLocation.BEFORE);
 	}
@@ -27,6 +31,7 @@ public class ImageIcon implements Icon {
 	public void drawIcon(float x, float y) {
 		float scaleFactor = (float) renderSize / (float) imgSize;
 		GlStateManager.pushMatrix();
+		GlStateManager.enableTexture2D();
 		GlStateManager.scale(scaleFactor, scaleFactor, scaleFactor);
 		Minecraft.getMinecraft().getTextureManager().bindTexture(iconImage);
 		Gui.drawModalRectWithCustomSizedTexture(Math.round(x / scaleFactor), Math.round(y / scaleFactor),

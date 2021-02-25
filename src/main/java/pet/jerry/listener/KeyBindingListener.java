@@ -11,6 +11,7 @@ import org.lwjgl.input.Keyboard;
 import pet.jerry.hud.HUDEditScreen;
 import pet.jerry.screen.FeaturesList;
 import pet.jerry.screen.FeaturesScreen;
+import pet.jerry.screen.configure.ContainerConfigurationScreen;
 
 @SideOnly(Side.CLIENT)
 public class KeyBindingListener {
@@ -27,7 +28,7 @@ public class KeyBindingListener {
 		if(hudEditKeybind.isPressed()) {
 			Minecraft.getMinecraft().displayGuiScreen(new HUDEditScreen());
 		} else if (featureScreenKeyBind.isPressed()) {
-			Minecraft.getMinecraft().displayGuiScreen(new FeaturesScreen());
+			Minecraft.getMinecraft().displayGuiScreen(new ContainerConfigurationScreen());
 		}
 	}
 }
